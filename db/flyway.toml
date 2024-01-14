@@ -1,0 +1,8 @@
+# More information on the parameters can be found here: https://documentation.red-gate.com/flyway/flyway-cli-and-api/configuration/parameters
+
+[environments.gordonjd]
+url = "jdbc:sqlserver://golem.csse.rose-hulman.edu;databaseName=AnimalTracker-gordonjd;encrypt=false"
+user = "gordonjd"
+
+[flyway]
+locations = ["filesystem:migrations"]
