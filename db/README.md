@@ -2,8 +2,18 @@
 1. Download flyway from https://documentation.red-gate.com/fd/command-line-184127404.html.
 2. Unzip flyway and add it to your PATH
 
-# Running migrations
-```sh
-cd db
-flyway -environment=<env_name> migrate
-```
+# Setting up a new database
+1. Create the database in SQL Server Management Studio
+    ```sql
+    CREATE DATABASE [AnimalTracker-<name>]
+    ```
+2. Add a configuration to [flyway.toml](flyway.toml)
+    ```toml
+    [environments.<name>]
+    url = "jdbc:sqlserver://golem.csse.rose-hulman.edu;databaseName=AnimalTracker-<name>;encrypt=false"
+    user = "<name>"
+    ```
+3. Run the migrations (must be in the db folder wih flyway.toml)
+    ```sh
+    flyway -environment=<name> migrate -password=<password>
+    ```

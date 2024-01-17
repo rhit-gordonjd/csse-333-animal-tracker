@@ -2,7 +2,7 @@ CREATE PROCEDURE ImportUser
 (
 	@Name varchar(50),
 	@IsResearcher bit = 0,
-	@IsContibutor bit = 0,
+	@IsContributor bit = 0,
 	@ID int OUTPUT
 )
 AS
@@ -44,7 +44,7 @@ BEGIN
 	INSERT INTO Researcher(ID) VALUES(@ID);
 END
 
-IF @IsContibutor = 1 AND NOT EXISTS (SELECT * FROM Contributor WHERE ID = @ID)
+IF @IsContributor = 1 AND NOT EXISTS (SELECT * FROM Contributor WHERE ID = @ID)
 BEGIN
 	INSERT INTO Contributor(ID) VALUES(@ID);
 END
