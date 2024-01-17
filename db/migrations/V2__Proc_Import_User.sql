@@ -1,8 +1,6 @@
 CREATE PROCEDURE ImportUser
 (
 	@Name varchar(50),
-	@IsResearcher bit = 0,
-	@IsContributor bit = 0,
 	@ID int OUTPUT
 )
 AS
@@ -29,7 +27,7 @@ BEGIN
 	-- No matching users found, create a new one
 	INSERT INTO [User] (Username, DisplayName)
 	VALUES (
-		LOWER(REPLACE(@Name, ' ', '')),
+		LOWER(REPLACE(@Name, ' ', '')), -- Automatically generated username 'First Last' -> 'firstlast'
 		@Name
 	)
 	SET @ID = scope_identity();
@@ -37,16 +35,6 @@ END
 ELSE
 BEGIN
 	SET @ID = @userID
-END
-
-IF @IsResearcher = 1 AND NOT EXISTS (SELECT * FROM Researcher WHERE ID = @ID)
-BEGIN
-	INSERT INTO Researcher(ID) VALUES(@ID);
-END
-
-IF @IsContributor = 1 AND NOT EXISTS (SELECT * FROM Contributor WHERE ID = @ID)
-BEGIN
-	INSERT INTO Contributor(ID) VALUES(@ID);
 END
 
 END

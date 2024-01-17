@@ -79,17 +79,17 @@ BEGIN
 
 	
 	-- Import User
-	DECLARE @contributorID AS int;
+	DECLARE @userID AS int;
 
-	EXEC @status = ImportUser @Name = @Person, @IsContributor = 1, @ID = @contributorID OUTPUT;
+	EXEC @status = ImportUser @Name = @Person, @ID = @userID OUTPUT;
 	IF @status <> 0
 	BEGIN
-		RAISERROR('Failed to import contributor user', 14, 1);
+		RAISERROR('Failed to import user', 14, 1);
 		RETURN 10;
 	END
 
 
-	IF EXISTS (SELECT * FROM Sighting WHERE OrganismID = @organismID AND ContributorID = @contributorID AND Timestamp = @Timestamp)
+	IF EXISTS (SELECT * FROM Sighting WHERE OrganismID = @organismID AND UserID = @userID AND Timestamp = @Timestamp)
 	BEGIN
 		PRINT('This sighting has already been imported, skipping');
 		RETURN 0;
@@ -97,19 +97,19 @@ BEGIN
 
 	
 	DECLARE @sightingID AS int;
-	INSERT INTO Sighting(Timestamp, Location, OrganismID, ContributorID)
+	INSERT INTO Sighting(Timestamp, Location, OrganismID, UserID)
 	VALUES(
 		@Timestamp,
 		geography::Point(@Latitude, @Longitude, 4326),
 		@organismID,
-		@contributorID
+		@userID
 	);
 	SET @sightingID = scope_identity();
 
 	IF @ImageURL IS NOT NULL AND @ImageURL <> ''
 	BEGIN
 		INSERT INTO UserImage(URL, UploaderID)
-		VALUES(@ImageURL, @contributorID);
+		VALUES(@ImageURL, @userID);
 		
 		INSERT INTO SightingImage(SightingID, ImageURL)
 		VALUES(@sightingID, @ImageURL);

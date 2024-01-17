@@ -38,7 +38,7 @@ BEGIN
 	DECLARE @ownerID AS int;
 	DECLARE @status AS int;
 
-	EXEC @status = ImportUser @Name = @StartedBy, @IsResearcher = 1, @ID = @ownerID OUTPUT;
+	EXEC @status = ImportUser @Name = @StartedBy, @ID = @ownerID OUTPUT;
 	IF @status <> 0
 	BEGIN
 		RAISERROR('Failed to import StartedBy user', 14, 1);
@@ -53,7 +53,7 @@ BEGIN
 
 
 	-- Import project owner
-	INSERT INTO ProjectMember(ResearcherID, ProjectID, IsOwner)
+	INSERT INTO ProjectMember(UserID, ProjectID, IsOwner)
 	VALUES(@ownerID, @projectID, 1);
 
 

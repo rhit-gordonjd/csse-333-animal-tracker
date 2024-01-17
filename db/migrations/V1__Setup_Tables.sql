@@ -1,15 +1,7 @@
 CREATE TABLE [User] (
 	ID int IDENTITY(1,1) PRIMARY KEY,
 	Username varchar(20) NOT NULL UNIQUE,
-	DisplayName varchar(50),
-);
-
-CREATE TABLE Researcher (
-	ID int PRIMARY KEY REFERENCES [User](ID)
-);
-
-CREATE TABLE Contributor (
-	ID int PRIMARY KEY REFERENCES [User](ID)
+	DisplayName varchar(50)
 );
 
 CREATE TABLE Project (
@@ -21,16 +13,16 @@ CREATE TABLE Project (
 );
 
 CREATE TABLE ProjectMember (
-	ResearcherID int REFERENCES Researcher(ID),
+	UserID int REFERENCES [User](ID),
 	ProjectID int REFERENCES Project(ID),
 	IsOwner bit NOT NULL,
-	PRIMARY KEY(ResearcherID, ProjectID)
+	PRIMARY KEY(UserID, ProjectID)
 );
 
 CREATE TABLE Interested (
-	ContributorID int REFERENCES Contributor(ID),
+	UserID int REFERENCES [User](ID),
 	ProjectID int REFERENCES Project(ID), 
-	PRIMARY KEY(ContributorID, ProjectID)
+	PRIMARY KEY(UserID, ProjectID)
 );
 
 CREATE TABLE Organism (
@@ -52,7 +44,7 @@ CREATE TABLE Sighting (
 	Timestamp datetime2 NOT NULL,
 	Location geography NOT NULL,
 	OrganismID int NOT NULL REFERENCES Organism(ID),
-	ContributorID int NOT NULL REFERENCES Contributor(ID), 
+	UserID int NOT NULL REFERENCES [User](ID), 
 );
 
 CREATE TABLE SightingImage (
@@ -63,7 +55,7 @@ CREATE TABLE SightingImage (
 
 CREATE TABLE SightingVerification (
 	SightingID int REFERENCES Sighting(ID), 
-	ResearcherID int REFERENCES Researcher(ID), 
+	UserID int REFERENCES [User](ID), 
 	Timestamp datetime2 NOT NULL DEFAULT (SYSDATETIME()), 
-	PRIMARY KEY(SightingID, ResearcherID)
+	PRIMARY KEY(SightingID, UserID)
 );
