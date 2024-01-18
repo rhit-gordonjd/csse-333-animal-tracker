@@ -2,4 +2,4 @@
 
 ## Projects Directories
 - `/db`: Database Migrations
-- `/app`: Java app for importing data and running web server
+- `/importer`: Java app for importing data
