@@ -12,24 +12,36 @@ public class UserDataService {
     @Autowired
     private DataSource dataSource;
 
-    public User getUserByID(int id) throws SQLException {
+    public UserDTO getUserByID(int id) throws SQLException {
         try (Connection connection = dataSource.getConnection()) {
             throw new RuntimeException("Not Implemented");
         }
     }
 
-    public User getUserByUsername(String username) throws SQLException {
-        try (Connection connection = dataSource.getConnection()) {
-            throw new RuntimeException("Not Implemented");
+    public UserDTO getUserByUsername(String username) throws SQLException {
+//        try (Connection connection = dataSource.getConnection()) {
+//            throw new RuntimeException("Not Implemented");
+//        }
+
+        if (username.equals("user")) {
+            return new UserDTO(1, "user", "{noop}password");
         }
+
+        return null;
     }
 
-    public static class User {
+    public void createUser(String username, String encodedPassword) throws SQLException {
+//        try (Connection connection = dataSource.getConnection()) {
+//            throw new RuntimeException("Not Implemented");
+//        }
+    }
+
+    public static class UserDTO {
         private final int id;
         private final String username;
         private final String encodedPassword;
 
-        User(int id, String username, String encodedPassword) {
+        UserDTO(int id, String username, String encodedPassword) {
             this.id = id;
             this.username = username;
             this.encodedPassword = encodedPassword;
