@@ -55,6 +55,10 @@ public class ATUserDetailsService implements UserDetailsService {
             this.encodedPassword = data.getEncodedPassword();
         }
 
+        public int getId() {
+            return id;
+        }
+
         @Override
         public String getUsername() {
             return username;
