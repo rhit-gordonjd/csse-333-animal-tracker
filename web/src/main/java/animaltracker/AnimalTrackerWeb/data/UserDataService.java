@@ -24,7 +24,7 @@ public class UserDataService {
 //        }
 
         if (username.equals("user")) {
-            return new UserDTO(1, "user", "{noop}password");
+            return new UserDTO(1, "user", "John Doe", "{noop}password");
         }
 
         return null;
@@ -39,11 +39,13 @@ public class UserDataService {
     public static class UserDTO {
         private final int id;
         private final String username;
+        private final String displayName;
         private final String encodedPassword;
 
-        UserDTO(int id, String username, String encodedPassword) {
+        UserDTO(int id, String username, String displayName, String encodedPassword) {
             this.id = id;
             this.username = username;
+            this.displayName = displayName;
             this.encodedPassword = encodedPassword;
         }
 
@@ -53,6 +55,10 @@ public class UserDataService {
 
         public String getUsername() {
             return username;
+        }
+
+        public String getDisplayName() {
+            return displayName;
         }
 
         public String getEncodedPassword() {

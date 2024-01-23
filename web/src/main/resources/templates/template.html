@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head th:fragment="head" th:remove="tag">
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+</head>
+<body>
+    <header th:fragment="header">
+        <h1>Animal Tracker</h1>
+        <div th:remove="tag" th:if="${currentUser}">
+            <p>
+                You are currently signed in as
+                <span th:remove="tag" th:text="${currentUser.displayName}">Display Name</span>
+            <form th:action="@{/logout}" method="post">
+                <input type="submit" value="Sign Out"/>
+            </form>
+            </p>
+        </div>
+        <div th:remove="tag" th:unless="${currentUser}">
+            <p>
+                You are not signed in.
+                <a href="/login">Sign In</a>
+                <a href="/register">Register</a>
+            </p>
+        </div>
+    </header>
+</body>
+</html>

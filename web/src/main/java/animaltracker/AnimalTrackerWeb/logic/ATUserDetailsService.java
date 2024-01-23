@@ -21,7 +21,7 @@ public class ATUserDetailsService implements UserDetailsService {
     PasswordEncoder passwordEncoder;
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public ATUserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         UserDataService.UserDTO userData;
         try {
             userData = data.getUserByUsername(username);
@@ -41,19 +41,25 @@ public class ATUserDetailsService implements UserDetailsService {
         data.createUser(username, passwordEncoder.encode(password));
     }
 
-    static class ATUserDetails implements UserDetails {
+    public static class ATUserDetails implements UserDetails {
         private final String username;
+        private final String displayName;
         private final String encodedPassword;
         private final List<GrantedAuthority> authorities = List.of();
 
         ATUserDetails(UserDataService.UserDTO data) {
             this.username = data.getUsername();
+            this.displayName = data.getDisplayName();
             this.encodedPassword = data.getEncodedPassword();
         }
 
         @Override
         public String getUsername() {
             return username;
+        }
+
+        public String getDisplayName() {
+            return displayName;
         }
 
         @Override
