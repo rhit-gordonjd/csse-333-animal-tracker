@@ -2,7 +2,7 @@
 
 [environments.gordonjd]
 url = "jdbc:sqlserver://golem.csse.rose-hulman.edu;databaseName=AnimalTracker-gordonjd;encrypt=false"
-user = "gordonjd"
+user = "AnimalTrackerMigrator"
 
 [flyway]
 locations = ["filesystem:migrations"]
