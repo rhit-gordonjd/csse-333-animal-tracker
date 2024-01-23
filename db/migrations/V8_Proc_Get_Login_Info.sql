@@ -2,10 +2,10 @@
 CREATE PROCEDURE GetLoginInfo
 (
 	@Username varchar(20),
-	@PasswordSalt varchar(20) OUTPUT
+	@PasswordHash varchar(20) OUTPUT
 )
 AS
 BEGIN
-SELECT PasswordSalt FROM [User] WHERE @Username = Username
+SELECT PasswordHash FROM [User] WHERE @Username = Username
 END
 GO

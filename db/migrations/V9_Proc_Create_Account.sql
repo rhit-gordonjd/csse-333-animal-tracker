@@ -3,7 +3,7 @@ CREATE PROCEDURE CreateAccount
 (
 	@Username varchar(20),
 	@DisplayName varchar(50),
-	@PasswordSalt varchar(50), --what size is this supposed to be?
+	@PasswordHash varchar(50),
 	@ID int OUTPUT
 )
 AS
@@ -16,9 +16,9 @@ BEGIN
 	RETURN 1;
 END
 
-IF @PasswordSalt IS NULL OR @PasswordSalt = ''
+IF @PasswordHash IS NULL OR @PasswordHash = ''
 BEGIN
-	RAISERROR('Paramter @PasswordSalt is missing or empty', 14, 1);
+	RAISERROR('Paramter @PasswordHash is missing or empty', 14, 1);
 	RETURN 1;
 END
 
@@ -30,10 +30,9 @@ BEGIN
 END
 
 -- No matching users found, create a new one
-INSERT INTO [User] (Username, DisplayName, PasswordSalt)
-VALUES (@Username, @DisplayName, @PasswordSalt)
+INSERT INTO [User] (Username, DisplayName, PasswordHash)
+VALUES (@Username, @DisplayName, @PasswordHash)
 
-DECLARE @ID as int
 SET @ID = @@IDENTITY;
 
 END
