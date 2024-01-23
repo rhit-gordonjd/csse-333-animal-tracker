@@ -42,12 +42,14 @@ public class ATUserDetailsService implements UserDetailsService {
     }
 
     public static class ATUserDetails implements UserDetails {
+        public final int id;
         private final String username;
         private final String displayName;
         private final String encodedPassword;
         private final List<GrantedAuthority> authorities = List.of();
 
         ATUserDetails(UserDataService.UserDTO data) {
+            this.id = data.getId();
             this.username = data.getUsername();
             this.displayName = data.getDisplayName();
             this.encodedPassword = data.getEncodedPassword();
