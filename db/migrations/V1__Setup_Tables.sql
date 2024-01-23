@@ -1,7 +1,8 @@
 CREATE TABLE [User] (
 	ID int IDENTITY(1,1) PRIMARY KEY,
 	Username varchar(20) NOT NULL UNIQUE,
-	DisplayName varchar(50)
+	DisplayName varchar(50),
+	PasswordSalt varchar(50)
 );
 
 CREATE TABLE Project (
