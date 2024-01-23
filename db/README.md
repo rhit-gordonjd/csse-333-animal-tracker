@@ -10,7 +10,7 @@
     USE [AnimalTracker-<name>]
     GO
     CREATE USER AnimalTrackerMigrator FOR LOGIN AnimalTrackerMigrator
-    ALTER ROLE db_accessadmin ADD MEMBER AnimalTrackerMigrator
+    ALTER ROLE db_owner ADD MEMBER AnimalTrackerMigrator
     ```
 2. Add a configuration to [flyway.toml](flyway.toml)
     ```toml
