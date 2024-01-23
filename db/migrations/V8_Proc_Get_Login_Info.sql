@@ -6,6 +6,6 @@ CREATE PROCEDURE GetLoginInfo
 )
 AS
 BEGIN
-SELECT PasswordHash FROM [User] WHERE @Username = Username
+SELECT PasswordHash, DisplayName FROM [User] WHERE @Username = Username
 END
 GO
