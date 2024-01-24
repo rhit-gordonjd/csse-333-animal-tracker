@@ -1,0 +1,74 @@
+- name: Setup Migrations
+  become: true
+  hosts: server
+  vars_prompt:
+    - name: db_password
+      private: true
+      prompt: Enter the password for the SQL user AnimalTrackerMigrator
+  tasks:
+    - name: Create flyway app directory
+      ansible.builtin.file:
+        path: /opt/flyway/app
+        state: directory
+    - name: Install flyway
+      ansible.builtin.unarchive:
+        src: https://download.red-gate.com/maven/release/com/redgate/flyway/flyway-commandline/10.6.0/flyway-commandline-10.6.0-linux-x64.tar.gz
+        remote_src: yes
+        dest: /opt/flyway/app
+        extra_opts: [--strip-components=1]
+    - name: Create flyway data directory
+      ansible.builtin.file:
+        path: /opt/flyway/data
+        state: directory
+    - name: Copy migrations
+      ansible.builtin.copy:
+        src: ../db/
+        dest: /opt/flyway/data
+    - name: Run migrations
+      ansible.builtin.command:
+        chdir: /opt/flyway/data
+        cmd: /opt/flyway/app/flyway -environment=prod migrate -password={{ db_password }}
+- name: Setup Animal Tracker Server
+  become: true
+  hosts: server
+  tasks:
+    - name: Create user
+      ansible.builtin.user:
+        name: animal-tracker
+        shell: /sbin/nologin
+        create_home: no
+    - name: Create directory
+      ansible.builtin.file:
+        path: /opt/animal-tracker
+        state: directory
+    - name: Copy jar file
+      ansible.builtin.copy:
+        src: ../web/target/AnimalTrackerWeb-0.0.1-SNAPSHOT.jar
+        dest: /opt/animal-tracker/server.jar
+    - name: Copy application.properties
+      ansible.builtin.copy:
+        src: application.properties
+        dest: /opt/animal-tracker/application.properties
+        owner: animal-tracker
+        group: animal-tracker
+        mode: '0600'
+    - name: Copy animal-tracker.service
+      ansible.builtin.copy:
+        src: animal-tracker.service
+        dest: /etc/systemd/system/animal-tracker.service
+    - name: Install authbind
+      ansible.builtin.apt:
+        name: authbind
+    - name: Setup authbind
+      ansible.builtin.file:
+        path: /etc/authbind/byport/80
+        state: touch
+        owner: root
+        group: animal-tracker
+        mode: '0770'
+    - name: Start systemd service
+      systemd:
+        state: restarted
+        enabled: true
+        daemon_reload: yes
+        name: animal-tracker.service

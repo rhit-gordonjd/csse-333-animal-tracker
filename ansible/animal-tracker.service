@@ -1,0 +1,17 @@
+[Unit]
+Description=animal-tracker server
+After=syslog.target network.target
+
+[Service]
+User=animal-tracker
+Group=animal-tracker
+
+WorkingDirectory=/opt/animal-tracker
+
+ExecStart=authbind /usr/lib/jvm/java-17-openjdk-amd64/bin/java -jar /opt/animal-tracker/server.jar
+ExecStop=/bin/kill -15 $MAINPID
+SuccessExitStatus=143
+
+[Install]
+WantedBy=multi-user.target
+

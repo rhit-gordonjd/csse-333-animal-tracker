@@ -1,0 +1,2 @@
+[server]
+csse@animal-tracker.csse.rose-hulman.edu
