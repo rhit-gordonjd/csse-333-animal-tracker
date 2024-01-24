@@ -3,7 +3,7 @@ CREATE PROCEDURE CreateAccount
 (
 	@Username varchar(20),
 	@DisplayName varchar(50),
-	@PasswordHash varchar(50),
+	@PasswordHash varchar(100),
 	@ID int OUTPUT
 )
 AS
@@ -12,18 +12,18 @@ BEGIN
 -- Validate parameters
 IF @Username IS NULL OR @Username = ''
 BEGIN
-	RAISERROR('Paramter @Username is missing or empty', 14, 1);
+	RAISERROR('Parameter @Username is missing or empty', 14, 1);
 	RETURN 1;
 END
 
 IF @PasswordHash IS NULL OR @PasswordHash = ''
 BEGIN
-	RAISERROR('Paramter @PasswordHash is missing or empty', 14, 1);
+	RAISERROR('Parameter @PasswordHash is missing or empty', 14, 1);
 	RETURN 1;
 END
 
 -- Check if this user already exists
-IF (SELECT count(*) FROM [User] WHERE Username = @Username) > 1
+IF EXISTS (SELECT * FROM [User] WHERE Username = @Username)
 BEGIN
 	RAISERROR('Create account failed, please try again', 14, 1);
 	RETURN 2;
@@ -37,3 +37,5 @@ SET @ID = @@IDENTITY;
 
 END
 GO
+
+GRANT EXECUTE ON CreateAccount TO AnimalTrackerApp

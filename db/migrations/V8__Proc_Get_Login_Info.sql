@@ -1,11 +1,12 @@
--- gets the PasswordSalt for the given Username. The application should then use the PasswordSalt to compare to the password the user typed in
+-- gets the id, display name, and password hash for the user with the given username
 CREATE PROCEDURE GetLoginInfo
 (
-	@Username varchar(20),
-	@PasswordHash varchar(20) OUTPUT
+	@Username varchar(20)
 )
 AS
 BEGIN
-SELECT PasswordHash, DisplayName FROM [User] WHERE @Username = Username
+SELECT ID, DisplayName, PasswordHash FROM [User] WHERE @Username = Username
 END
 GO
+
+GRANT EXECUTE ON GetLoginInfo TO AnimalTrackerApp
