@@ -14,8 +14,13 @@
         <p th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Username Error</p>
     </div>
     <div>
+        <label> Display Name: <input type="text" name="displayName" th:field="*{displayName}"/> </label>
+        <p th:if="${#fields.hasErrors('displayName')}" th:errors="*{displayName}">Display Name Error</p>
+    </div>
+    <div>
+        <!--/* Note: th:field is omitted so that we always clear the password field */-->
         <label> Password: <input type="password" name="password"/> </label>
-        <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Username Error</p>
+        <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password Error</p>
     </div>
     <div><input type="submit" value="Register"/></div>
 </form>

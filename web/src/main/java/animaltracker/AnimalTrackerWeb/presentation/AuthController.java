@@ -3,7 +3,8 @@ package animaltracker.AnimalTrackerWeb.presentation;
 import animaltracker.AnimalTrackerWeb.logic.ATUserDetailsService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+import org.hibernate.validator.constraints.Length;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -54,9 +55,10 @@ public class AuthController {
         }
 
         try {
-            userService.registerUser(values.getUsername(), values.getPassword());
+            userService.registerUser(values.getUsername(), values.getDisplayName(), values.getPassword());
         } catch (Exception e) {
             new Exception("An error occurred when registering user with username " + values.username, e).printStackTrace();
+
             model.addAttribute("showGenericError", true);
             return "register";
         }
@@ -74,16 +76,24 @@ public class AuthController {
 
 
     public static class RegisterForm {
-        @NotNull
         @NotEmpty
+        @Length(min = 3, max = 20)
+        @Pattern(regexp = "[a-zA-Z0-9-_.]*", message = "username can only consist of numbers, letters, '_', '-', and '.'")
         private String username;
 
-        @NotNull
+        @NotEmpty
+        @Length(max = 50)
+        private String displayName;
+
         @NotEmpty
         private String password;
 
         public String getUsername() {
             return username;
+        }
+
+        public String getDisplayName() {
+            return displayName;
         }
 
         public String getPassword() {
@@ -92,6 +102,10 @@ public class AuthController {
 
         public void setUsername(String username) {
             this.username = username;
+        }
+
+        public void setDisplayName(String displayName) {
+            this.displayName = displayName;
         }
 
         public void setPassword(String password) {

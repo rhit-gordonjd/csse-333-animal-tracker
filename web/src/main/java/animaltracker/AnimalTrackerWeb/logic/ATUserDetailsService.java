@@ -37,8 +37,8 @@ public class ATUserDetailsService implements UserDetailsService {
         return new ATUserDetails(userData);
     }
 
-    public void registerUser(String username, String password) throws Exception {
-        data.createUser(username, passwordEncoder.encode(password));
+    public void registerUser(String username, String displayName, String password) throws Exception {
+        data.createUser(username, displayName, passwordEncoder.encode(password));
     }
 
     public static class ATUserDetails implements UserDetails {

@@ -4,36 +4,65 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.sql.DataSource;
+import java.sql.CallableStatement;
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 
 @Component
 public class UserDataService {
     @Autowired
     private DataSource dataSource;
 
-    public UserDTO getUserByID(int id) throws SQLException {
-        try (Connection connection = dataSource.getConnection()) {
-            throw new RuntimeException("Not Implemented");
-        }
-    }
-
     public UserDTO getUserByUsername(String username) throws SQLException {
-//        try (Connection connection = dataSource.getConnection()) {
-//            throw new RuntimeException("Not Implemented");
-//        }
+        UserDTO out = null;
 
-        if (username.equals("user")) {
-            return new UserDTO(1, "user", "John Doe", "{noop}password");
+        try (Connection connection = dataSource.getConnection();
+             CallableStatement stmt = connection.prepareCall(
+                     "{? = call GetLoginInfo(@Username = ?)}")
+        ) {
+            stmt.registerOutParameter(1, Types.INTEGER);
+            stmt.setString(2, username);
+
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                out = new UserDTO(
+                        rs.getInt("ID"),
+                        username,
+                        rs.getString("DisplayName"),
+                        rs.getString("PasswordHash")
+                );
+            }
+
+            int status = stmt.getInt(1);
+
+            if (status != 0) {
+                throw new SQLException("Stored Procedure GetLoginInfo returned " + status);
+            }
+
+            return out;
         }
-
-        return null;
     }
 
-    public void createUser(String username, String encodedPassword) throws SQLException {
-//        try (Connection connection = dataSource.getConnection()) {
-//            throw new RuntimeException("Not Implemented");
-//        }
+    public void createUser(String username, String displayName, String encodedPassword) throws SQLException {
+        try (Connection connection = dataSource.getConnection();
+             CallableStatement stmt = connection.prepareCall(
+                     "{? = call CreateAccount(@Username = ?, @DisplayName = ?, @PasswordHash = ?, @ID = NULL)}")
+        ) {
+            stmt.registerOutParameter(1, Types.INTEGER);
+            stmt.setString(2, username);
+            stmt.setString(3, displayName);
+            stmt.setString(4, encodedPassword);
+
+            stmt.executeUpdate();
+
+            int status = stmt.getInt(1);
+
+            if (status != 0) {
+                throw new SQLException("Stored Procedure CreateAccount returned " + status);
+            }
+        }
     }
 
     public static class UserDTO {
