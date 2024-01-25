@@ -4,11 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.sql.DataSource;
-import java.sql.CallableStatement;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Types;
+import java.sql.*;
 
 @Component
 public class UserDataService {
@@ -39,6 +35,40 @@ public class UserDataService {
 
             if (status != 0) {
                 throw new SQLException("Stored Procedure GetLoginInfo returned " + status);
+            }
+
+            return out;
+        }
+    }
+
+    /**
+     * Gets a user by their id
+     * Note: does not get the user's password, use getUserByUsername for logging in
+     */
+    public UserDTO getUserById(int id) throws SQLException {
+        UserDTO out = null;
+
+        try (Connection connection = dataSource.getConnection();
+             CallableStatement stmt = connection.prepareCall(
+                     "{? = call GetUserInfo(@ID = ?)}")
+        ) {
+            stmt.registerOutParameter(1, Types.INTEGER);
+            stmt.setInt(2, id);
+
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                out = new UserDTO(
+                        id,
+                        rs.getString("Username"),
+                        rs.getString("DisplayName"),
+                        null
+                );
+            }
+
+            int status = stmt.getInt(1);
+
+            if (status != 0) {
+                throw new SQLException("Stored Procedure GetUserInfo returned " + status);
             }
 
             return out;
