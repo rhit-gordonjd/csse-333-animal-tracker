@@ -1,23 +1,27 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+<html lang="en">
 <head>
-    <title>Spring Security Example </title>
+    <div th:replace="~{template :: head}"></div>
+    <title>Animal Tracker - Login</title>
 </head>
 <body>
-<div th:if="${param.error}">
-    Invalid username and password.
-</div>
-<div th:if="${param.logout}">
-    You have been logged out.
-</div>
-<div th:if="${param.registered}">
-    Your account has been created. You may now login.
-</div>
-<form th:action="@{/login}" method="post">
-    <div><label> Username: <input type="text" name="username"/> </label></div>
-    <div><label> Password: <input type="password" name="password"/> </label></div>
-    <div><input type="submit" value="Sign In"/></div>
-</form>
-<a href="/register">Register</a>
+    <div th:replace="~{template :: header}"></div>
+
+    <h1>Sign In</h1>
+
+    <div th:if="${param.error}">
+        Invalid username and password.
+    </div>
+    <div th:if="${param.logout}">
+        You have been logged out.
+    </div>
+    <div th:if="${param.registered}">
+        Your account has been created. You may now login.
+    </div>
+    <form th:action="@{/login}" method="post">
+        <div><label> Username: <input type="text" name="username"/> </label></div>
+        <div><label> Password: <input type="password" name="password"/> </label></div>
+        <div><input type="submit" value="Sign In"/></div>
+    </form>
 </body>
 </html>
