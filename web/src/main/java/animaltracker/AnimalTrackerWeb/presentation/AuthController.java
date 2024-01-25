@@ -1,6 +1,6 @@
 package animaltracker.AnimalTrackerWeb.presentation;
 
-import animaltracker.AnimalTrackerWeb.logic.ATUserDetailsService;
+import animaltracker.AnimalTrackerWeb.logic.UserService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
@@ -21,7 +21,7 @@ public class AuthController {
     private static final String alreadyAuthedPage = "redirect:/";
 
     @Autowired
-    private ATUserDetailsService userService;
+    private UserService userService;
 
     @GetMapping("/login")
     public String login() {
