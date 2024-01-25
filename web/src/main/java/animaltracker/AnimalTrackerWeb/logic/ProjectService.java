@@ -2,7 +2,6 @@ package animaltracker.AnimalTrackerWeb.logic;
 
 import animaltracker.AnimalTrackerWeb.data.ProjectDataService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import java.sql.SQLException;
@@ -15,7 +14,7 @@ public class ProjectService {
     @Autowired
     private ProjectDataService projectDataService;
 
-    public List<Project> getUserInterestedProjects(ATUserDetailsService.ATUserDetails details) throws SQLException
+    public List<Project> getUserInterestedProjects(User details) throws SQLException
     {
         int userId = details.getId();
         List<ProjectDataService.ProjectDTO> interestedProjects = projectDataService.getInterestedProjects(userId);
