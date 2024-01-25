@@ -18,7 +18,7 @@ public class ProjectDataService {
     {
         try (Connection connection = dataSource.getConnection()) {
             try (CallableStatement stmt = connection.prepareCall(
-                    "{? = call RetrieveUsersInterestedProjects(@UserID = ?)}")) {
+                    "{? = call RetrieveUserInterestedProjects(@UserID = ?)}")) {
                 stmt.registerOutParameter(1, Types.INTEGER);
                 stmt.setInt(2, userId);
 

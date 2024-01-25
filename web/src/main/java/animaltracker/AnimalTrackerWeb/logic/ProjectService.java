@@ -37,7 +37,7 @@ public class ProjectService {
             this.name = projectDTO.getName();
             this.description = projectDTO.getDescription();
             this.creationTimestamp = projectDTO.getCreationTimestamp().toInstant();
-            this.closedDate = projectDTO.getClosedDate().toInstant();
+            this.closedDate = (projectDTO.getClosedDate() == null ? null : projectDTO.getClosedDate().toInstant());
         }
 
         public int getId() {
