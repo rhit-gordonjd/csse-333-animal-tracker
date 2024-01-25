@@ -6,9 +6,6 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -70,8 +67,7 @@ public class AuthController {
      * Returns true if the user is already logged in, so we shouldn't show them a login or registration page
      */
     private boolean userAlreadyAuthed() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        return authentication != null && !(authentication instanceof AnonymousAuthenticationToken);
+        return userService.getCurrentUser() != null;
     }
 
 
