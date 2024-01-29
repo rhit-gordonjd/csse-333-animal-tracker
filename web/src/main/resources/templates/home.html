@@ -5,8 +5,35 @@
     <title>Animal Tracker</title>
 </head>
 <body>
-    <div th:replace="~{template :: header}"></div>
 
-    <h1>Welcome!</h1>
+<div th:replace="~{template :: header}"></div>
+
+<h1>Welcome!</h1>
+
+<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Creation Timestamp</th>
+            <th>Closed Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr th:if="${interestedProjects.empty}">
+            <td colspan="5">No Projects</td>
+        </tr>
+        <tr th:each="project : ${interestedProjects}">
+            <td th:text="${project.id}">ID</td>
+            <td th:text="${project.name}">Name</td>
+            <td th:text="${project.description}">Description</td>
+            <td th:text="${project.creationTimestamp}">Creation TimeSpace</td>
+            <td th:text="${project.closedDate}">Closed Date</td>
+        </tr>
+    </tbody>
+</table>
+
+
 </body>
 </html>

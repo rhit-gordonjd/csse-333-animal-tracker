@@ -1,0 +1,23 @@
+
+:root {
+    background: rgb(0,212,255);
+    background: linear-gradient(0deg, rgba(0,212,255,1) 0%, rgba(9,9,121,1) 50%, rgba(2,0,36,1) 93%);
+    background-repeat: no-repeat;
+}
+
+.top-bar {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 150px;
+    color: white;
+}
+
+.main-header {
+    display: flex;
+    justify-content: center;
+    margin: 100px;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 100px;
+    color: white;
+}

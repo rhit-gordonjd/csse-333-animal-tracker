@@ -8,5 +8,9 @@ user = "AnimalTrackerMigrator"
 url = "jdbc:sqlserver://golem.csse.rose-hulman.edu;databaseName=AnimalTracker;encrypt=false"
 user = "AnimalTrackerMigrator"
 
+[environments.wallacls]
+url = "jdbc:sqlserver://golem.csse.rose-hulman.edu;databaseName=AnimalTracker-wallacls;encrypt=false"
+user = "AnimalTrackerMigrator"
+
 [flyway]
 locations = ["filesystem:migrations"]
