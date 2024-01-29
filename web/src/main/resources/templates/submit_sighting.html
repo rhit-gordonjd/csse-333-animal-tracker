@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <div th:replace="~{template :: head}"></div>
+    <title>Animal Tracker - Submit Sighting</title>
+</head>
+<body>
+    <div th:replace="~{template :: header}"></div>
+
+    <h1>Submit Sighting for <span th:remove="tag" th:text="${project.name}">Project Name</span></h1>
+
+    <p th:if="${project.isCurrentlyClosed}">This project is closed. You cannot submit sightings to it.</p>
+    <form th:unless="${project.isCurrentlyClosed}" th:action="@{/submit_sighting}" th:object="${values}" method="post">
+        <div>
+            <label for="select-organism">
+                Organism:
+            </label>
+            <select name="organism" id="select-organism" th:field="*{organism}">
+                <option value="">&mdash; Please select an organism &mdash;</option>
+                <option th:each="organism: ${organismOptions}"
+                        th:text="${{organism}}"
+                        th:value="${organism.id}">
+                    Project Name
+                </option>
+            </select>
+            <p th:if="${#fields.hasErrors('organism')}" th:errors="*{organism}">Organism Error</p>
+        </div>
+        <div>
+            <label for="location"></label>
+            <input type="text" name="location" id="location" th:field="*{location}" />
+            <p th:if="${#fields.hasErrors('location')}" th:errors="*{location}">Organism Error</p>
+        </div>
+        <div><input type="submit" value="Submit"/></div>
+    </form>
+</body>
+</html>
