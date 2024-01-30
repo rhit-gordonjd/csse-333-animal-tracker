@@ -8,3 +8,5 @@ BEGIN
 	INNER JOIN Interested as I on I.UserID = @UserID
 	WHERE P.ID = I.ProjectID
 END
+GO
+GRANT EXECUTE ON RetrieveUserInterestedProjects TO AnimalTrackerApp
