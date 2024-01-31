@@ -32,5 +32,8 @@ build/
 ### VS Code ###
 .vscode/
 
-## Config file with secret
-application.properties
+## Local config file with secrets
+/application.properties
+
+## User uploaded files
+/usercontent/
