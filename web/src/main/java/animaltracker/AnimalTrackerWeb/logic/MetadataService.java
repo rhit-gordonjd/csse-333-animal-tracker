@@ -37,28 +37,22 @@ public class MetadataService {
     }
 
     public static class Metadata {
-        private Double latitude = null;
-        private Double longitude = null;
+        private Location location = null;
         private Instant timestamp = null;
         private final String detectedExtension;
 
         private Metadata(GeoLocation location, Date timestamp, String detectedExtension) {
             this.detectedExtension = detectedExtension;
             if (location != null) {
-                this.latitude = location.getLatitude();
-                this.longitude = location.getLongitude();
+                this.location = new Location(location.getLatitude(), location.getLongitude());
             }
             if (timestamp != null) {
                 this.timestamp = timestamp.toInstant();
             }
         }
 
-        public Double getLatitude() {
-            return latitude;
-        }
-
-        public Double getLongitude() {
-            return longitude;
+        public Location getLocation() {
+            return location;
         }
 
         public Instant getTimestamp() {

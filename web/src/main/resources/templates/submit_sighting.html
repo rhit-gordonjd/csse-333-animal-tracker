@@ -34,7 +34,8 @@
             <label for="image">
                 Image:
             </label>
-            <input type="file" name="image" id="image">
+            <input type="file" name="image" id="image" accept="image/png,image/jpeg">
+            <p>PNG and JPEG images under 25MB are supported</p>
             <!--/* We show errors for imageUrl since that is the field that is ultimately validated */-->
             <p th:if="${#fields.hasErrors('imageUrl')}" th:errors="*{imageUrl}">Image Error</p>
         </div>

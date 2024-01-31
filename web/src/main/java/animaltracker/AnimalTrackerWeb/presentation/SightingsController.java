@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.time.Instant;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class SightingsController {
@@ -35,18 +36,33 @@ public class SightingsController {
     private MetadataService metadataService;
     @Autowired
     private UserService userService;
+    @Autowired
+    private SightingService sightingService;
 
     @GetMapping("/project/{projectId}/sighting/new")
     public String submitSightingForm(@PathVariable int projectId, Model model) throws SQLException {
         model.addAttribute("values", new SubmitSightingForm());
+
         ProjectService.Project project = projectService.getProjectById(projectId);
-        setupSubmitSightingFormModel(project, model);
+        if (project == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+        model.addAttribute("project", project);
+
+        List<OrganismService.Organism> organisms = organismService.getOrganismsForProject(project.getId());
+        model.addAttribute("organismOptions", organisms);
+
         return "submit_sighting";
     }
 
     @PostMapping("/project/{projectId}/sighting/new")
     public String submitSightingSubmit(@PathVariable int projectId, @ModelAttribute("values") SubmitSightingForm values, BindingResult bindingResult, Model model) throws SQLException {
         ProjectService.Project project = projectService.getProjectById(projectId);
+        if (project == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+
+        List<OrganismService.Organism> organisms = organismService.getOrganismsForProject(project.getId());
 
         if (values.getImage() != null && values.getImage().getSize() > 0) {
             try {
@@ -54,9 +70,13 @@ public class SightingsController {
                 MetadataService.Metadata metadata = metadataService.extractMetadata(values.getImage().getInputStream());
 
                 // Fill the metadata into the form
-                values.setLatitude(metadata.getLatitude());
-                values.setLongitude(metadata.getLongitude());
-                values.setTimestamp(metadata.getTimestamp());
+                if (metadata.getLocation() != null) {
+                    values.setLatitude(metadata.getLocation().getLatitude());
+                    values.setLongitude(metadata.getLocation().getLongitude());
+                }
+                if (metadata.getTimestamp() != null) {
+                    values.setTimestamp(metadata.getTimestamp());
+                }
 
                 // Save the image
                 String imageUrl = saveImage(values.getImage(), metadata.getDetectedExtension());
@@ -72,7 +92,7 @@ public class SightingsController {
             } catch (Exception e) {
                 // Put the error into the logs
                 new Exception(
-                        "Error occurred processing uploaded image (name=" + values.getImage().getName() + ", size=" + values.getImage().getSize() + ")"
+                        "Error occurred processing uploaded image (name=" + values.getImage().getName() + ", size=" + values.getImage().getSize() + ")", e
                 ).printStackTrace();
                 bindingResult.rejectValue("imageUrl", "error.values", "your uploaded image could not be processed");
             }
@@ -80,11 +100,32 @@ public class SightingsController {
 
         validator.validate(values, bindingResult);
 
+        // Validate organism ID
+        OrganismService.Organism organism = null;
+        if (values.getOrganism() != null) {
+            Optional<OrganismService.Organism> matchingOrganism = organisms.stream().filter(o -> o.getId() == values.getOrganism()).findAny();
+            if (matchingOrganism.isPresent()) {
+                organism = matchingOrganism.get();
+            } else {
+                bindingResult.rejectValue("organism", "error.values", "invalid organism selected");
+            }
+        }
+
         if (bindingResult.hasErrors() || project.isCurrentlyClosed()) {
-            setupSubmitSightingFormModel(project, model);
+            model.addAttribute("project", project);
+            model.addAttribute("organismOptions", organisms);
             return "submit_sighting";
         }
 
+        int sightingId = sightingService.createSighting(
+                userService.getCurrentUser(),
+                organism,
+                values.timestamp,
+                new Location(values.getLatitude(), values.getLongitude()),
+                values.getImageUrl()
+        );
+
+        // TODO: Redirect to project page or sighting page (using sightingId)
         return "redirect:/";
     }
 
@@ -95,17 +136,6 @@ public class SightingsController {
                 fileName -> UserContentController.PREFIX + fileName,
                 userService.getCurrentUser()
         );
-    }
-
-    private void setupSubmitSightingFormModel(ProjectService.Project project, Model model) throws SQLException {
-        if (project == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-        }
-
-        model.addAttribute("project", project);
-
-        List<OrganismService.Organism> organisms = organismService.getOrganismsForProject(project.getId());
-        model.addAttribute("organismOptions", organisms);
     }
 
     public static class SubmitSightingForm {
