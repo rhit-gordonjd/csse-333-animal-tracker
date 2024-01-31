@@ -1,15 +1,18 @@
 package animaltracker.AnimalTrackerWeb.logic;
 
 import animaltracker.AnimalTrackerWeb.data.StorageService;
+import animaltracker.AnimalTrackerWeb.data.UploadDataService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.sql.SQLException;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Function;
 
 @Component
 public class ImageUploadService {
@@ -21,13 +24,20 @@ public class ImageUploadService {
 
     @Autowired
     private StorageService storageService;
+    @Autowired
+    private UploadDataService uploadDataService;
 
-    public String uploadImage(InputStream inputStream, String extension) throws UnsupportedImageTypeException, IOException {
+    public String save(InputStream inputStream, String extension, Function<String, String> urlMapper, User uploader) throws UnsupportedImageTypeException, IOException, SQLException {
         if (!allowedExtensions.contains(extension)) {
             throw new UnsupportedImageTypeException(extension, allowedExtensions.stream().toList());
         }
 
-        return storageService.save(inputStream, extension);
+        String fileName = storageService.save(inputStream, extension);
+        String url = urlMapper.apply(fileName);
+
+        uploadDataService.createImage(url, uploader.getId());
+
+        return url;
     }
 
     public InputStream load(String name) throws IOException {

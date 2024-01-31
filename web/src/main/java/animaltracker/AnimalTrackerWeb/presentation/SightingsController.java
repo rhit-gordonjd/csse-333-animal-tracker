@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.time.Instant;
 import java.util.List;
@@ -32,6 +33,8 @@ public class SightingsController {
     private ImageUploadService imageUploadService;
     @Autowired
     private MetadataService metadataService;
+    @Autowired
+    private UserService userService;
 
     @GetMapping("/project/{projectId}/sighting/new")
     public String submitSightingForm(@PathVariable int projectId, Model model) throws SQLException {
@@ -55,9 +58,13 @@ public class SightingsController {
                 values.setLongitude(metadata.getLongitude());
                 values.setTimestamp(metadata.getTimestamp());
 
-                String name = imageUploadService.uploadImage(values.getImage().getInputStream(), metadata.getDetectedExtension());
-                values.setImageUrl(UserContentController.PREFIX + name);
+                // Save the image
+                String imageUrl = saveImage(values.getImage(), metadata.getDetectedExtension());
 
+                // Save the resulting url in values
+                values.setImageUrl(imageUrl);
+
+                // Move onto the next stage, if necessary
                 values.setImageStage(2);
             } catch (UnsupportedImageTypeException e) {
                 String message = "File type not supported. Supported: " + String.join(", ", e.getAllowedExtensions()) + ".";
@@ -79,6 +86,15 @@ public class SightingsController {
         }
 
         return "redirect:/";
+    }
+
+    private String saveImage(MultipartFile image, String extension) throws UnsupportedImageTypeException, IOException, SQLException {
+        return imageUploadService.save(
+                image.getInputStream(),
+                extension,
+                fileName -> UserContentController.PREFIX + fileName,
+                userService.getCurrentUser()
+        );
     }
 
     private void setupSubmitSightingFormModel(ProjectService.Project project, Model model) throws SQLException {
