@@ -36,6 +36,31 @@ public class ProjectDataService {
         }
     }
 
+    public ProjectDTO getProjectById(int id) throws SQLException {
+        try (Connection connection = dataSource.getConnection()) {
+            try (CallableStatement stmt = connection.prepareCall(
+                    "{? = call GetProject(@ProjectID = ?)}")) {
+                stmt.registerOutParameter(1, Types.INTEGER);
+                stmt.setInt(2, id);
+
+                ResultSet resultSet = stmt.executeQuery();
+
+                List<ProjectDTO> out = parseProjects(resultSet);
+
+                int status = stmt.getInt(1);
+                if (status != 0) {
+                    throw new SQLException("Stored Procedure GetProject returned " + status);
+                }
+
+                if (out.isEmpty()) {
+                    return null;
+                } else {
+                    return out.get(0);
+                }
+            }
+        }
+    }
+
     private List<ProjectDTO> parseProjects(ResultSet rs) throws SQLException
     {
         List<ProjectDTO> results = new ArrayList<>();
