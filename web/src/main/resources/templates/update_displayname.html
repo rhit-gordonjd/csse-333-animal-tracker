@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Change Display Name</title>
+</head>
+<body>
+<div>
+    <h1>Update Display Name</h1>
+    <div>Input your new display name</div>
+    <form th:action="@{/updateDisplayName}" method="post">
+        <!-- <div><label> Display Name <input type="text" name="username" th.value="@{oldDisplayName}"/> </label></div> -->
+        <div><label> Display Name <input type="text" name="newdisplayname"/> </label></div>
+        <!-- note: it seems to work with value='test' but not th.value -->
+        <div><input type="submit" value="Save Change"/></div>
+    </form>
+</div>
+</body>
