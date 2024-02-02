@@ -40,7 +40,7 @@ public class UserSettingsService {
     public boolean updateUsername(int userID, String newUsername) {
         try {
             Connection connection = dataSource.getConnection();
-            CallableStatement stmt = connection.prepareCall("{? = call UpdateUsername(@UserID = ?, @NewUserame = ?}");
+            CallableStatement stmt = connection.prepareCall("{? = call UpdateUsername(@UserID = ?, @NewUsername = ?)}");
             stmt.registerOutParameter(1, Types.INTEGER);
             stmt.setInt(2, userID);
             stmt.setString(3, newUsername);

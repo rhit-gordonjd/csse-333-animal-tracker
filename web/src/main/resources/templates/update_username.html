@@ -9,8 +9,8 @@
     <div th:replace="~{template :: header}"></div>
     <h1>Update Username</h1>
     <div>Input your new username</div>
-    <form th:object="${UpdateUsernameForm}" th:action="@{/updateUsername}" method="post" modelAttribute="usernameForm">
-        <div><label> Username <input type="text" name="username"/> </label></div>
+    <form th:object="${UpdateUsernameForm}" th:action="@{/settings/updateusername}" method="post" modelAttribute="usernameForm">
+        <div><label> Username <input type="text" name="newusername"/> </label></div>
         <div><input type="submit" value="Save Change"/></div>
     </form>
 </div>

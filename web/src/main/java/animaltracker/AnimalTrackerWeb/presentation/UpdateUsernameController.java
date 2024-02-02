@@ -26,13 +26,13 @@ public class UpdateUsernameController {
     private UserService userService;
 
     @GetMapping("/settings/updateusername")
-    public String updateDisplayName(Model model) {
+    public String updateUsername(Model model) {
         model.addAttribute("usernameForm", new UpdateUsernameForm());
         return "update_username";
     }
 
     @PostMapping("/settings/updateusername")
-    public String updateDisplayName(@Valid @ModelAttribute("usernameForm") UpdateUsernameForm usernameForm, BindingResult bindingResult, Model model) {
+    public String updateUsername(@Valid @ModelAttribute("usernameForm") UpdateUsernameForm usernameForm, BindingResult bindingResult, Model model) {
         model.addAttribute("usernameForm", usernameForm);
         User user = userService.getCurrentUser();
         int userID = user.getId();
