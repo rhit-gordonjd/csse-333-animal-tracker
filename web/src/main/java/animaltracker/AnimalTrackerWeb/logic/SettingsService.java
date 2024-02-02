@@ -13,6 +13,6 @@ public class SettingsService {
     }
 
     public boolean updateUsername(int UserID, String newUsername) {
-        return userSettings.updateDisplayName(UserID, newUsername);
+        return userSettings.updateUsername(UserID, newUsername);
     }
 }

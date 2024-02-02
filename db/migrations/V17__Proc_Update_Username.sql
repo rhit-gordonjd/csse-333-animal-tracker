@@ -1,5 +1,5 @@
 -- Changes the user's display name
-CREATE PROCEDURE UpdateDisplayName
+CREATE PROCEDURE UpdateUsername
 (
 	@UserID int,
 	@NewUsername varchar(20)
