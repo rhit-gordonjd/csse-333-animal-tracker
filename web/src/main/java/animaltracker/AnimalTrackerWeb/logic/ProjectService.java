@@ -14,14 +14,22 @@ public class ProjectService {
     @Autowired
     private ProjectDataService projectDataService;
 
-    public List<Project> getUserInterestedProjects(User details) throws SQLException
-    {
+    public List<Project> getUserInterestedProjects(User details) throws SQLException {
         int userId = details.getId();
         List<ProjectDataService.ProjectDTO> interestedProjects = projectDataService.getInterestedProjects(userId);
         return interestedProjects
                 .stream()
                 .map(Project::new)
                 .collect(Collectors.toList());
+    }
+
+    public Project getProjectById(int id) throws SQLException {
+        ProjectDataService.ProjectDTO projectDTO = projectDataService.getProjectById(id);
+        if (projectDTO == null) {
+            return null;
+        } else {
+            return new Project(projectDTO);
+        }
     }
 
     public static class Project {
@@ -57,6 +65,10 @@ public class ProjectService {
 
         public Instant getClosedDate() {
             return closedDate;
+        }
+
+        public boolean isCurrentlyClosed() {
+            return closedDate != null && closedDate.isBefore(Instant.now());
         }
     }
 }

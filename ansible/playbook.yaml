@@ -66,6 +66,12 @@
         owner: root
         group: animal-tracker
         mode: '0770'
+    - name: Create usercontent directory
+      ansible.builtin.file:
+        path: /var/animaltracker/usercontent
+        state: directory
+        owner: animal-tracker
+        group: animal-tracker
     - name: Start systemd service
       systemd:
         state: restarted
