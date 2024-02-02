@@ -9,7 +9,7 @@
     <div>
         <h1>Update Display Name</h1>
         <div>Input your new display name</div>
-        <form th:action="@{/updateDisplayName}" method="post">
+        <form th:object="${UpdateDisplayNameForm}" th:action="@{/settings/updatedisplayname}" method="post" modelAttribute="form">
             <div><label> Display Name <input type="text" name="newdisplayname"/> </label></div>
             <div><input type="submit" value="Save Change"/></div>
         </form>

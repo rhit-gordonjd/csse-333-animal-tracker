@@ -11,4 +11,8 @@ public class SettingsService {
     public boolean updateDisplayName(int UserID, String newDisplayName) {
         return userSettings.updateDisplayName(UserID, newDisplayName);
     }
+
+    public boolean updateUsername(int UserID, String newUsername) {
+        return userSettings.updateDisplayName(UserID, newUsername);
+    }
 }
