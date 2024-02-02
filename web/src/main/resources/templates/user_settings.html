@@ -1,22 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <div th:replace="~{template :: head}"></div>
     <title>Settings</title>
 </head>
 <body>
-<h1>Account Settings</h1>
-<div>
-    <div>Display Name</div>
-    <div>Update Display Name</div>
-</div>
+    <div th:replace="~{template :: header}"></div>
+    <h1>Account Settings</h1>
+    <div>
+        <div>Display Name</div>
+        <button type="button" th:onclick="/settings"> Hello</button>
+     <div>Update Display Name</div>
+    </div>
 
-<div>
-    <div>Username</div>
-    <div>Update Username</div>
-</div>
+    <div>
+        <div>Username</div>
+        <div>Update Username</div>
+    </div>
 
-<div>
-    <div>Change Password</div>
-</div>
+    <div>
+        <div>Change Password</div>
+    </div>
 
 </body>

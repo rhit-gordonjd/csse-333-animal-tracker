@@ -24,18 +24,20 @@ public class UpdateDisplayNameController {
     @Autowired
     private UserService userService;
 
-    @GetMapping("/updateDisplayName")
+    @GetMapping("/settings/updatedisplayname")
     public String updateDisplayNameForm(Model model) {
         model.addAttribute("newdisplayname", new UpdateDisplayNameForm());
-        return "updateDisplayName";
+        return "update_display_name";
     }
 
-    @PostMapping("/updateDisplayName")
+    @PostMapping("/settings/updatedisplayname")
     public String updateDisplayName(Model model, @ModelAttribute("newdisplayname") @Valid UpdateDisplayNameForm newDisplayName) {
         User user = userService.getCurrentUser();
         int userID = user.getId();
-        settings.updateDisplayName(userID, newDisplayName.getDisplayName());
-        return "redirect:/settings";
+        if (!settings.updateDisplayName(userID, newDisplayName.getDisplayName())) {
+            System.out.println("oh no an error occured!");
+        }
+        return "settings";
     }
 
     public static class UpdateDisplayNameForm {

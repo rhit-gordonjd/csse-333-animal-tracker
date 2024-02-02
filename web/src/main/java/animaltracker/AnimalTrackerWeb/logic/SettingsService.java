@@ -8,7 +8,6 @@ import org.springframework.stereotype.Component;
 public class SettingsService {
     @Autowired
     private UserSettingsService userSettings;
-
     public boolean updateDisplayName(int UserID, String newDisplayName) {
         return userSettings.updateDisplayName(UserID, newDisplayName);
     }
