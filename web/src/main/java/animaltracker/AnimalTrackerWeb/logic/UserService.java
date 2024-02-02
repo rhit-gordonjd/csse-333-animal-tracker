@@ -61,4 +61,14 @@ public class UserService {
     public void registerUser(String username, String displayName, String password) throws Exception {
         data.createUser(username, displayName, passwordEncoder.encode(password));
     }
+
+    public void reloadUser() {
+        UserDataService.UserDTO userData;
+        try {
+            userData = data.getUserById(currentUser.getId());
+            currentUser = new User(userData.getId(), userData.getUsername(), userData.getDisplayName());
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

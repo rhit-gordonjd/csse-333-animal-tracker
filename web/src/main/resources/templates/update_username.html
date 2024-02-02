@@ -1,13 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <div th:replace="~{template :: head}"></div>
     <title>Change Username</title>
 </head>
 <body>
 <div>
+    <div th:replace="~{template :: header}"></div>
     <h1>Update Username</h1>
     <div>Input your new username</div>
-    <form th:action="@{/updateUsername}" method="post">
+    <form th:object="${UpdateUsernameForm}" th:action="@{/updateUsername}" method="post" modelAttribute="usernameForm">
         <div><label> Username <input type="text" name="username"/> </label></div>
         <div><input type="submit" value="Save Change"/></div>
     </form>

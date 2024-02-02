@@ -17,7 +17,7 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
 
 @Controller
-public class UpdateDisplayNameController {
+public class UpdateUsernameController {
 
     @Autowired
     private SettingsService settings;
@@ -25,20 +25,20 @@ public class UpdateDisplayNameController {
     @Autowired
     private UserService userService;
 
-    @GetMapping("/settings/updatedisplayname")
+    @GetMapping("/settings/updateusername")
     public String updateDisplayName(Model model) {
-        model.addAttribute("form", new UpdateDisplayNameForm());
-        return "update_display_name";
+        model.addAttribute("usernameForm", new UpdateUsernameForm());
+        return "update_username";
     }
 
-    @PostMapping("/settings/updatedisplayname")
-    public String updateDisplayName(@Valid @ModelAttribute("form") UpdateDisplayNameController.UpdateDisplayNameForm form, BindingResult bindingResult, Model model) {
-        model.addAttribute("form",form);
+    @PostMapping("/settings/updateusername")
+    public String updateDisplayName(@Valid @ModelAttribute("usernameForm") UpdateUsernameForm usernameForm, BindingResult bindingResult, Model model) {
+        model.addAttribute("usernameForm", usernameForm);
         User user = userService.getCurrentUser();
         int userID = user.getId();
 
         try{
-            settings.updateDisplayName(userID, form.getnewdisplayname());
+            settings.updateUsername(userID, usernameForm.getnewusername());
         }catch(Exception e){
             System.out.println("Something went wrong");
         }
@@ -47,17 +47,17 @@ public class UpdateDisplayNameController {
     }
 
 
-    public static class UpdateDisplayNameForm {
+    public static class UpdateUsernameForm {
         @NotEmpty
         @Length(max = 50)
-        private String newdisplayname;
+        private String newusername;
 
-        public String getnewdisplayname() {
-            return this.newdisplayname;
+        public String getnewusername() {
+            return this.newusername;
         }
 
-        public void setnewdisplayname(String newdisplayname) {
-            this.newdisplayname = newdisplayname;
+        public void setnewusername(String newusername) {
+            this.newusername = newusername;
         }
     }
 
