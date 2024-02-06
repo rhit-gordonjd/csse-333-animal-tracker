@@ -59,23 +59,24 @@ public class UserSettingsService {
         return true;
     }
 
-//    public boolean updatePassword(int userID, String oldPass, String newPass) {
-//        try {
-//            Connection connection = dataSource.getConnection();
-//            CallableStatement stmt = connection.prepareCall("{? = call UpdatePassword(@UserID = ?, @NewPassword = ?}");
-//            stmt.registerOutParameter(1, Types.INTEGER);
-//            stmt.setInt(2, userID);
-//            stmt.setString(3, newUsername);
-//
-//            stmt.executeUpdate();
-//
-//            int returnValue = stmt.getInt(1);
-//
-//            if (returnValue != 0) {
-//                throw new SQLException("Change Username was not Sucessful" + returnValue);
-//            }
-//        } catch (Exception e) {
-//            // TODO: handle exception
-//        }
-//    }
+    public boolean updatePassword(int userID, String newPass) {
+        try {
+            Connection connection = dataSource.getConnection();
+            CallableStatement stmt = connection.prepareCall("{? = call ChangePassword(@UserID = ?, @NewPasswordHash = ?)}");
+            stmt.registerOutParameter(1, Types.INTEGER);
+            stmt.setInt(2, userID);
+            stmt.setString(3, newPass);
+
+            stmt.executeUpdate();
+
+            int returnValue = stmt.getInt(1);
+            if (returnValue != 0) {
+                throw new SQLException("Change Password was not Sucessful" + returnValue);
+            }
+            return true;
+        } catch (Exception e) {
+            // TODO: handle exception
+        }
+        return true;
+    }
 }
