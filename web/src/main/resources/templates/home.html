@@ -1,34 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="stylesheet" href="/css/home.css">
     <div th:replace="~{template :: head}"></div>
     <title>Animal Tracker</title>
-    
 </head>
 <body>
     <div th:replace="~{template :: header}"></div>
 
-    <div th:if="${interestedProjects.empty}">
-        <h1>No Interested Projects</h1>
-    </div>
+    <div class="container">
 
-    <div class="project-container">
         <h1 class="header text-center">Projects</h1>
-        <div class="projects">
-            <div class="project" th:each="project : ${interestedProjects}">
-                <div class="card" style="width: 18rem;">
-                    <div class="card-body">
-                        <h5 th:text="${project.name}" class="card-title">Card title</h5>
-<!--                        <h6 th:text="${project.creationTimestamp.toString()}"card-subtitle mb-2 text-body-secondary">Card subtitle</h6>-->
-                        <p th:text="${project.description}" style="-webkit-line-clamp: 3;" class="card-text">Description</p>
-                        <a href="#" class="card-link">Go to Project</a>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <div th:replace="fragments/project_list :: projectList(${interestedProjects}, 'No Interested Projects')"></div>
     </div>
-
 </body>
 
 </html>
