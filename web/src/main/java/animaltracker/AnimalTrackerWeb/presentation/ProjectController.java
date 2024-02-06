@@ -15,7 +15,7 @@ public class ProjectController {
     @Autowired
     private ProjectService projectService;
 
-    @GetMapping("/project/{projectId}")
+    @GetMapping("/projects/{projectId}")
     public String projectById(@PathVariable int projectId, Model model) throws SQLException {
 
         ProjectService.Project project = projectService.getProjectById(projectId);

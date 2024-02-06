@@ -39,7 +39,7 @@ public class SightingsController {
     @Autowired
     private SightingService sightingService;
 
-    @GetMapping("/project/{projectId}/sighting/new")
+    @GetMapping("/projects/{projectId}/sightings/new")
     public String submitSightingForm(@PathVariable int projectId, Model model) throws SQLException {
         model.addAttribute("values", new SubmitSightingForm());
 
@@ -55,7 +55,7 @@ public class SightingsController {
         return "submit_sighting";
     }
 
-    @PostMapping("/project/{projectId}/sighting/new")
+    @PostMapping("/projects/{projectId}/sightings/new")
     public String submitSightingSubmit(@PathVariable int projectId, @ModelAttribute("values") SubmitSightingForm values, BindingResult bindingResult, Model model) throws SQLException {
         ProjectService.Project project = projectService.getProjectById(projectId);
         if (project == null) {
