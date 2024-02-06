@@ -13,15 +13,15 @@ public class WebSecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers("/usercontent/*").permitAll()
-                        .requestMatchers("/css/*").permitAll()
-                        .requestMatchers("/images/*").permitAll()
+                                .requestMatchers("/usercontent/*").permitAll()
+                                .requestMatchers("/css/*").permitAll()
+                                .requestMatchers("/images/*").permitAll()
 //                        .requestMatchers("/").permitAll()
-                        // Note: we need /login here, even though it is permitted in formLogin,
-                        //   so that /login?registered is permitted
-                                .requestMatchers("projects/*").permitAll()
-                        .requestMatchers("/register", "/login").permitAll()
-                        .anyRequest().authenticated()
+                                // Note: we need /login here, even though it is permitted in formLogin,
+                                //   so that /login?registered is permitted
+                                .requestMatchers("/projects/*").permitAll()
+                                .requestMatchers("/register", "/login").permitAll()
+                                .anyRequest().authenticated()
                 )
                 .formLogin((form) -> form
                         .loginPage("/login")

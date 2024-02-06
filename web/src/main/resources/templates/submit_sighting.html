@@ -11,7 +11,7 @@
 
     <p th:if="${project.isCurrentlyClosed}">This project is closed. You cannot submit sightings to it.</p>
     <form th:unless="${project.isCurrentlyClosed}"
-          th:action="@{/project/{projectId}/sighting/new(projectId=${project.id})}"
+          th:action="@{/projects/{projectId}/sightings/new(projectId=${project.id})}"
           th:object="${values}"
           method="post" enctype="multipart/form-data"
     >
