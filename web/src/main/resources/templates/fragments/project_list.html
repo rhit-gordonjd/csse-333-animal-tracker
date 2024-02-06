@@ -1,0 +1,16 @@
+<div class="projects" th:fragment="projectList(projects, emptyMessage)">
+    <div th:if="${projects.empty}">
+        <h1 th:text="${emptyMessage}">Empty Message</h1>
+    </div>
+
+    <div class="card my-3" th:each="project : ${projects}">
+        <div class="card-body">
+            <h4 class="card-title">
+                <a th:href="@{/projects/{projectId}(projectId=${project.id})}" th:text="${project.name}">
+                    Project Name
+                </a>
+            </h4>
+            <p class="card-text" th:text="${project.description}">Description</p>
+        </div>
+    </div>
+</div>
