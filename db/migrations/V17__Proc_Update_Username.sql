@@ -1,4 +1,4 @@
--- Changes the user's display name
+-- Changes the user's username name
 CREATE PROCEDURE UpdateUsername
 (
 	@UserID int,

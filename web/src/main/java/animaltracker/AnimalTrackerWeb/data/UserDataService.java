@@ -61,7 +61,7 @@ public class UserDataService {
                         id,
                         rs.getString("Username"),
                         rs.getString("DisplayName"),
-                        null
+                        rs.getString("PasswordHash")
                 );
             }
 
