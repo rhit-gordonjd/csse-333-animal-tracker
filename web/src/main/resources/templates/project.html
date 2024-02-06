@@ -6,10 +6,32 @@
     <title th:text="${project.name}"></title>
 </head>
 <body>
-    <h1 th:text="${project.name}"></h1>
-    <h5 th:text="${project.description}"></h5>
 
-    
+    <div class="p-5 text-center bg-body-tertiary">
+        <h1 th:text="${project.name}" class="mb-3">Heading</h1>
+        <h4 th:text="${project.description}" class="mb-3">Subheading</h4>
+    </div>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Common Name</th>
+                <th scope="col">Scientific Name</th>
+                <th scope="col">Submitted By</th>
+                <th scope="col">Timestamp</th>
+                <th scope="col">Location</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="sighting : ${projectSightings}">
+                <td th:text="${sighting.commonName}"></td>
+                <td th:text="${sighting.scientificName}"></td>
+                <td th:text="${sighting.displayName}"></td>
+                <td th:text="${sighting.timestamp}"></td>
+                <td th:text="${sighting.latitude} + ${sighting.longitude} "></td>
+            </tr>
+        </tbody>
+    </table>
 
 
 </body>
