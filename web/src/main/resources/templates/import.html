@@ -7,18 +7,20 @@
 <body>
     <div th:replace="~{template :: header}"></div>
 
-    <h1>Import Data</h1>
+    <div class="container">
+        <h1>Import Data</h1>
 
-    <form th:action="@{/import}" method="post" enctype="multipart/form-data">
-        <div><label>
-            Projects Data:
-            <input type="file" accept=".csv" name="projects">
-        </label></div>
-        <div><label>
-            Sightings Data:
-            <input type="file" accept=".csv" name="sightings">
-        </label></div>
-        <input type="submit" value="Import Data"/>
-    </form>
+        <form th:action="@{/import}" method="post" enctype="multipart/form-data">
+            <div class="my-3">
+                <label class="form-label" for="projects">Projects Data:</label>
+                <input class="form-control" type="file" accept=".csv" name="projects" id="projects">
+            </div>
+            <div class="my-3">
+                <label class="form-label" for="sightings">Sightings Data:</label>
+                <input class="form-control" type="file" accept=".csv" name="sightings" id="sightings">
+            </div>
+            <input type="submit" value="Import Data" class="btn btn-primary"/>
+        </form>
+    </div>
 </body>
 </html>

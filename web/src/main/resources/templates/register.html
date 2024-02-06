@@ -7,26 +7,31 @@
 <body>
     <div th:replace="~{template :: header}"></div>
 
-    <h1>Register</h1>
+    <div class="container">
+        <h1>Register</h1>
 
-    <div th:if="${showGenericError}">
-        Account was unable to be created
+        <div th:if="${showGenericError}">
+            Account was unable to be created
+        </div>
+        <form th:action="@{/register}" th:object="${values}" method="post">
+            <div class="my-3">
+                <label class="form-label">Username:</label>
+                <input class="form-control" type="text" name="username" th:field="*{username}"/>
+                <p th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Username Error</p>
+            </div>
+            <div class="my-3">
+                <label class="form-label">Display Name:</label>
+                <input class="form-control" type="text" name="displayName" th:field="*{displayName}"/>
+                <p th:if="${#fields.hasErrors('displayName')}" th:errors="*{displayName}">Display Name Error</p>
+            </div>
+            <div class="my-3">
+                <!--/* Note: th:field is omitted so that we always clear the password field */-->
+                <label class="form-label">Password:</label>
+                <input class="form-control" type="password" name="password"/>
+                <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password Error</p>
+            </div>
+            <input type="submit" value="Register" class="btn btn-primary"/>
+        </form>
     </div>
-    <form th:action="@{/register}" th:object="${values}" method="post">
-        <div>
-            <label> Username: <input type="text" name="username" th:field="*{username}"/> </label>
-            <p th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Username Error</p>
-        </div>
-        <div>
-            <label> Display Name: <input type="text" name="displayName" th:field="*{displayName}"/> </label>
-            <p th:if="${#fields.hasErrors('displayName')}" th:errors="*{displayName}">Display Name Error</p>
-        </div>
-        <div>
-            <!--/* Note: th:field is omitted so that we always clear the password field */-->
-            <label> Password: <input type="password" name="password"/> </label>
-            <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password Error</p>
-        </div>
-        <div><input type="submit" value="Register"/></div>
-    </form>
 </body>
 </html>
