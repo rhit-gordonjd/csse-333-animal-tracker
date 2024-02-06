@@ -32,6 +32,14 @@ public class ProjectService {
         }
     }
 
+    public List<Project> getAllProjects() throws SQLException {
+        List<ProjectDataService.ProjectDTO> interestedProjects = projectDataService.getAllProjects();
+        return interestedProjects
+                .stream()
+                .map(Project::new)
+                .collect(Collectors.toList());
+    }
+
     public static class Project {
         private final int id;
         private final String name;

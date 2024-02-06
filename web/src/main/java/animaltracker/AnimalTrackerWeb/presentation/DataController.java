@@ -31,4 +31,12 @@ public class DataController {
 
         return "home";
     }
+
+    @GetMapping("/projects")
+    public String allProjects(Model model) throws SQLException {
+        List<ProjectService.Project> projects = projectService.getAllProjects();
+        model.addAttribute("projects", projects);
+
+        return "projects";
+    }
 }

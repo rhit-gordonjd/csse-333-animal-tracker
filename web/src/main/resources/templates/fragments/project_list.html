@@ -3,16 +3,14 @@
         <h1 th:text="${emptyMessage}">Empty Message</h1>
     </div>
 
-    <div th:each="project : ${projects}">
-        <div class="media">
-            <div class="media-body">
-                <h4 class="media-heading">
-                    <a th:href="@{/projects/{projectId}(projectId=${project.id})}" th:text="${project.name}" >
-                        Project Name
-                    </a>
-                </h4>
-                <p th:text="${project.description}" class="card-text">Description</p>
-            </div>
+    <div class="card my-3" th:each="project : ${projects}">
+        <div class="card-body">
+            <h4 class="card-title">
+                <a th:href="@{/projects/{projectId}(projectId=${project.id})}" th:text="${project.name}">
+                    Project Name
+                </a>
+            </h4>
+            <p class="card-text" th:text="${project.description}">Description</p>
         </div>
     </div>
 </div>
