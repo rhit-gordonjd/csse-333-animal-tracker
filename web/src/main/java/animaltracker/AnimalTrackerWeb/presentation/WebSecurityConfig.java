@@ -17,6 +17,7 @@ public class WebSecurityConfig {
 //                        .requestMatchers("/").permitAll()
                         // Note: we need /login here, even though it is permitted in formLogin,
                         //   so that /login?registered is permitted
+                                .requestMatchers("projects/*").permitAll()
                         .requestMatchers("/register", "/login").permitAll()
                         .anyRequest().authenticated()
                 )
