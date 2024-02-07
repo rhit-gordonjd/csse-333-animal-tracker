@@ -8,18 +8,24 @@
     <div th:replace="~{template :: header}"></div>
     <h1>Account Settings</h1>
     <div>
-        <div>Display Name</div>
-        <button type="button" th:onclick="/settings"> Hello</button>
-     <div>Update Display Name</div>
+        <div>
+            <span>Display Name: </span>
+            <span th:remove="tag" th:text="${currentUser.displayName}">Display Name</span>
+        </div>
+        <button type="button"> <a href="/settings/updatedisplayname"> Update Display Name </a> </button>
     </div>
 
     <div>
-        <div>Username</div>
-        <div>Update Username</div>
+        <div>
+            <span>Username: </span>
+            <span th:remove="tag" th:text="${currentUser.username}">Username</span>
+        </div>
+        <button type="button"> <a href="/settings/updateusername"> Update Username </a> </button>
     </div>
 
     <div>
         <div>Change Password</div>
+        <button type="button"> <a href="/settings/updatepassword"> Update Password </a> </button>
     </div>
 
 </body>
