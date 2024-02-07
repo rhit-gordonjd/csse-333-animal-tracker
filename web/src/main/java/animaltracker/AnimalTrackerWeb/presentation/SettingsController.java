@@ -16,13 +16,24 @@ import java.sql.SQLException;
 public class SettingsController {
 
     @GetMapping("/settings")
-    public String Test() {
+    public String settings() {
         return "user_settings";
     }
 
-    @PostMapping("/settings")
-    public String ahhh() {
-        return "user_settings";
+
+    @PostMapping("/updatedisplayname")
+    public String displayName() {
+        return "update_display_name";
+    }
+
+    @PostMapping("/updateusername")
+    public String userame() {
+        return "update_username";
+    }
+
+    @PostMapping("/updatepassword")
+    public String password() {
+        return "update_password";
     }
 
 
