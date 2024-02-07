@@ -7,21 +7,23 @@
 <body>
     <div th:replace="~{template :: header}"></div>
 
-    <h1>Import Complete</h1>
-    <h2>Projects Import Report</h2>
-    <p>Imported <span th:remove="tag" th:text="${projectsReport.countOk}">0</span> projects</p>
-    <p>Failed to import <span th:remove="tag" th:text="${projectsReport.countBad}">0</span> projects</p>
-    <div th:if="${projectsReport.errors != null}">
-        <h3>Errors:</h3>
-        <pre th:text="${projectsReport.errors}">Projects Errors</pre>
-    </div>
+    <div class="container">
+        <h1>Import Complete</h1>
+        <h2>Projects Import Report</h2>
+        <p>Imported <span th:remove="tag" th:text="${projectsReport.countOk}">0</span> projects</p>
+        <p>Failed to import <span th:remove="tag" th:text="${projectsReport.countBad}">0</span> projects</p>
+        <div th:if="${projectsReport.errors != null}">
+            <h3>Errors:</h3>
+            <pre th:text="${projectsReport.errors}">Projects Errors</pre>
+        </div>
 
-    <h2>Sightings Import Report</h2>
-    <p>Imported <span th:remove="tag" th:text="${sightingsReport.countOk}">0</span> sightings</p>
-    <p>Failed to import <span th:remove="tag" th:text="${sightingsReport.countBad}">0</span> sightings</p>
-    <div th:if="${sightingsReport.errors != null}">
-        <h3>Errors:</h3>
-        <pre th:text="${sightingsReport.errors}">Sightings Errors</pre>
+        <h2>Sightings Import Report</h2>
+        <p>Imported <span th:remove="tag" th:text="${sightingsReport.countOk}">0</span> sightings</p>
+        <p>Failed to import <span th:remove="tag" th:text="${sightingsReport.countBad}">0</span> sightings</p>
+        <div th:if="${sightingsReport.errors != null}">
+            <h3>Errors:</h3>
+            <pre th:text="${sightingsReport.errors}">Sightings Errors</pre>
+        </div>
     </div>
 </body>
 </html>
