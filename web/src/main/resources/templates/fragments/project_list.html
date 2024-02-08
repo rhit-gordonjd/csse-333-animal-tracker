@@ -1,6 +1,6 @@
 <div class="projects" th:fragment="projectList(projects, emptyMessage)">
     <div th:if="${projects.empty}">
-        <h1 th:text="${emptyMessage}">Empty Message</h1>
+        <h5 th:text="${emptyMessage}">Empty Message</h5>
     </div>
 
     <div class="card my-3" th:each="project : ${projects}">
