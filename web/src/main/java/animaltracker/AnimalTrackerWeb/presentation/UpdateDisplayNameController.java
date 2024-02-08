@@ -1,6 +1,10 @@
 package animaltracker.AnimalTrackerWeb.presentation;
 
 import animaltracker.AnimalTrackerWeb.logic.SettingsService;
+import animaltracker.AnimalTrackerWeb.logic.User;
+import animaltracker.AnimalTrackerWeb.logic.UserService;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotEmpty;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -9,12 +13,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-
-import animaltracker.AnimalTrackerWeb.data.UserSettingsService;
-import animaltracker.AnimalTrackerWeb.logic.User;
-import animaltracker.AnimalTrackerWeb.logic.UserService;
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotEmpty;
 
 @Controller
 public class UpdateDisplayNameController {
@@ -42,7 +40,6 @@ public class UpdateDisplayNameController {
         }catch(Exception e){
             System.out.println("Something went wrong");
         }
-        userService.reloadUser();
         return "redirect:/settings";
     }
 
