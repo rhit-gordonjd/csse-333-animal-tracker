@@ -6,26 +6,28 @@
 </head>
 <body>
     <div th:replace="~{template :: header}"></div>
-    <h1>Account Settings</h1>
-    <div>
+
+    <div class="container">
+        <h1>Account Settings</h1>
         <div>
-            <span>Display Name: </span>
-            <span th:remove="tag" th:text="${currentUser.displayName}">Display Name</span>
+            <div class="mt-3">
+                <span>Display Name: </span>
+                <span th:remove="tag" th:text="${currentUser.displayName}">Display Name</span>
+            </div>
+            <a class="btn btn-primary" href="/settings/updatedisplayname"> Update Display Name </a>
         </div>
-        <button type="button"> <a href="/settings/updatedisplayname"> Update Display Name </a> </button>
-    </div>
 
-    <div>
         <div>
-            <span>Username: </span>
-            <span th:remove="tag" th:text="${currentUser.username}">Username</span>
+            <div class="mt-3">
+                <span>Username: </span>
+                <span th:remove="tag" th:text="${currentUser.username}">Username</span>
+            </div>
+            <a class="btn btn-primary" href="/settings/updateusername"> Update Username </a>
         </div>
-        <button type="button"> <a href="/settings/updateusername"> Update Username </a> </button>
-    </div>
 
-    <div>
-        <div>Change Password</div>
-        <button type="button"> <a href="/settings/updatepassword"> Update Password </a> </button>
+        <div>
+            <div class="mt-3">Change Password</div>
+            <a class="btn btn-primary" href="/settings/updatepassword"> Update Password </a>
+        </div>
     </div>
-
 </body>
