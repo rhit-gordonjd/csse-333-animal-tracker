@@ -129,6 +129,15 @@ public class SightingsController {
         return "redirect:/";
     }
 
+    @GetMapping("/my_sightings")
+    public String getMySightings(Model model) throws SQLException {
+        User currentUser = userService.getCurrentUser();
+
+        model.addAttribute("sightings", sightingService.getUserSightings(currentUser));
+
+        return "my_sightings";
+    }
+
     private String saveImage(MultipartFile image, String extension) throws UnsupportedImageTypeException, IOException, SQLException {
         return imageUploadService.save(
                 image.getInputStream(),

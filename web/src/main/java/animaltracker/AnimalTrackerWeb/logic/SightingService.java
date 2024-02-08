@@ -22,7 +22,14 @@ public class SightingService {
     public List<ProjectSighting> getProjectSightings(int projectId) throws SQLException {
         return sightingDataService.getSightingByProject(projectId)
                 .stream()
-                .map((SightingDataService.ProjectSightingDTO projectSightingDTO) -> new ProjectSighting(projectSightingDTO))
+                .map(ProjectSighting::new)
+                .collect(Collectors.toList());
+    }
+
+    public List<ProjectSightingWithProject> getUserSightings(User user) throws SQLException {
+        return sightingDataService.getUserSightings(user.getId())
+                .stream()
+                .map(ProjectSightingWithProject::new)
                 .collect(Collectors.toList());
     }
 
@@ -72,6 +79,25 @@ public class SightingService {
 
         public float getLatitude() {
             return latitude;
+        }
+    }
+
+    public static class ProjectSightingWithProject extends ProjectSighting  {
+        private final int projectId;
+        private final String projectName;
+
+        public ProjectSightingWithProject(SightingDataService.ProjectSightingWithProjectDTO projectSightingDTO) {
+            super(projectSightingDTO);
+            projectId = projectSightingDTO.getProjectId();
+            projectName = projectSightingDTO.getProjectName();
+        }
+
+        public int getProjectId() {
+            return projectId;
+        }
+
+        public String getProjectName() {
+            return projectName;
         }
     }
 }

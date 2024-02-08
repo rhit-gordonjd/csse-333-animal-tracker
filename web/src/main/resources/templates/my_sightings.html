@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <div th:replace="~{template :: head}"></div>
+    <title>My Sightings</title>
+</head>
+<body>
+    <div th:replace="~{template :: header}"></div>
+
+    <div class="container">
+        <div class="body">
+            <h1 class="mb-3">My Sightings</h1>
+
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">Project</th>
+                    <th scope="col">Common Name</th>
+                    <th scope="col">Scientific Name</th>
+                    <th scope="col">Submitted By</th>
+                    <th scope="col">Timestamp</th>
+                    <th scope="col">Location</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="sighting : ${sightings}">
+                    <td><a th:text="${sighting.projectName}" th:href="@{/projects/{projectId}(projectId=${sighting.projectId})}"></a></td>
+                    <td th:text="${sighting.commonName}"></td>
+                    <td th:text="${sighting.scientificName}"></td>
+                    <td th:text="${sighting.displayName}"></td>
+                    <td th:text="${sighting.timestamp}"></td>
+                    <td th:text="|${sighting.latitude}, ${sighting.longitude}|"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>

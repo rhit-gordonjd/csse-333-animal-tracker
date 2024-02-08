@@ -40,8 +40,7 @@ public class SightingDataService {
         }
     }
 
-    public List<ProjectSightingDTO> getSightingByProject(int projectId) throws SQLException
-    {
+    public List<ProjectSightingDTO> getSightingByProject(int projectId) throws SQLException {
         try (Connection connection = dataSource.getConnection()) {
             try (CallableStatement stmt = connection.prepareCall(
                     "{? = call GetProjectSightings(@ProjectID = ?)}")) {
@@ -66,8 +65,32 @@ public class SightingDataService {
         }
     }
 
-    private List<SightingDataService.ProjectSightingDTO> parseProjectSightings(ResultSet rs) throws SQLException
-    {
+    public List<ProjectSightingWithProjectDTO> getUserSightings(int userId) throws SQLException {
+        try (Connection connection = dataSource.getConnection()) {
+            try (CallableStatement stmt = connection.prepareCall(
+                    "{? = call GetUserSightings(@UserID = ?)}")) {
+                stmt.registerOutParameter(1, Types.INTEGER);
+                stmt.setInt(2, userId);
+
+                ResultSet resultSet = stmt.executeQuery();
+
+                List<SightingDataService.ProjectSightingWithProjectDTO> out = parseProjectSightingsWithProject(resultSet);
+
+                int status = stmt.getInt(1);
+                if (status != 0) {
+                    throw new SQLException("Stored Procedure GetProject returned " + status);
+                }
+
+                if (out.isEmpty()) {
+                    return null;
+                } else {
+                    return out;
+                }
+            }
+        }
+    }
+
+    private List<SightingDataService.ProjectSightingDTO> parseProjectSightings(ResultSet rs) throws SQLException {
         List<SightingDataService.ProjectSightingDTO> results = new ArrayList<>();
         int idIndex = rs.findColumn("ID");
         int timestampIndex = rs.findColumn("Timestamp");
@@ -79,6 +102,34 @@ public class SightingDataService {
         while (rs.next()) {
             results.add(new SightingDataService.ProjectSightingDTO(rs.getInt(idIndex), rs.getTimestamp(timestampIndex), rs.getFloat(locationLatitudeIndex),
                     rs.getFloat(locationLongitudeIndex), rs.getString(commonNameIndex), rs.getString(scientificNameIndex), rs.getString(displayNameIndex)));
+        }
+        return results;
+    }
+
+    private List<SightingDataService.ProjectSightingWithProjectDTO> parseProjectSightingsWithProject(ResultSet rs) throws SQLException {
+        List<SightingDataService.ProjectSightingWithProjectDTO> results = new ArrayList<>();
+        int idIndex = rs.findColumn("ID");
+        int timestampIndex = rs.findColumn("Timestamp");
+        int locationLatitudeIndex = rs.findColumn("LocationLatitude");
+        int locationLongitudeIndex = rs.findColumn("LocationLongitude");
+        int commonNameIndex = rs.findColumn("CommonName");
+        int scientificNameIndex = rs.findColumn("ScientificName");
+        int displayNameIndex = rs.findColumn("DisplayName");
+        int projectIdIndex = rs.findColumn("ProjectID");
+        int projectNameIndex = rs.findColumn("ProjectName");
+
+        while (rs.next()) {
+            results.add(new SightingDataService.ProjectSightingWithProjectDTO(
+                    rs.getInt(idIndex),
+                    rs.getTimestamp(timestampIndex),
+                    rs.getFloat(locationLatitudeIndex),
+                    rs.getFloat(locationLongitudeIndex),
+                    rs.getString(commonNameIndex),
+                    rs.getString(scientificNameIndex),
+                    rs.getString(displayNameIndex),
+                    rs.getInt(projectIdIndex),
+                    rs.getString(projectNameIndex)
+            ));
         }
         return results;
     }
@@ -129,6 +180,25 @@ public class SightingDataService {
 
         public float getLatitude() {
             return latitude;
+        }
+    }
+
+    public static class ProjectSightingWithProjectDTO extends ProjectSightingDTO {
+        private final int projectId;
+        private final String projectName;
+
+        public ProjectSightingWithProjectDTO(int id, Timestamp timestamp, float latitude, float longitude, String commonName, String scientificName, String displayName, int projectId, String projectName) {
+            super(id, timestamp, latitude, longitude, commonName, scientificName, displayName);
+            this.projectId = projectId;
+            this.projectName = projectName;
+        }
+
+        public int getProjectId() {
+            return projectId;
+        }
+
+        public String getProjectName() {
+            return projectName;
         }
     }
 }

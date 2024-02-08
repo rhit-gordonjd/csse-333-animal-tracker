@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="stylesheet" href="/css/home.css">
     <div th:replace="~{template :: head}"></div>
     <title th:text="${project.name}"></title>
 </head>
@@ -28,7 +27,7 @@
                 <td th:text="${sighting.scientificName}"></td>
                 <td th:text="${sighting.displayName}"></td>
                 <td th:text="${sighting.timestamp}"></td>
-                <td th:text="${sighting.latitude} + ${sighting.longitude} "></td>
+                <td th:text="|${sighting.latitude}, ${sighting.longitude}|"></td>
             </tr>
         </tbody>
     </table>
