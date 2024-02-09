@@ -15,19 +15,11 @@ import java.util.List;
 public class DataController {
     @Autowired
     private ProjectService projectService;
-    @Autowired
-    private UserService userService;
 
     @GetMapping("/")
     public String home(Model model) throws SQLException {
-        User currentUser = userService.getCurrentUser();
-
-        if (currentUser == null) {
-            model.addAttribute("interestedProjects", List.of());
-        } else {
-            List<ProjectService.Project> interestedProjects = projectService.getUserInterestedProjects(currentUser);
-            model.addAttribute("interestedProjects", interestedProjects);
-        }
+        List<ProjectService.Project> interestedProjects = projectService.getUserInterestedProjects();
+        model.addAttribute("interestedProjects", interestedProjects);
 
         return "home";
     }
