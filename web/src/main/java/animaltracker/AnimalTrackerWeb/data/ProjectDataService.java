@@ -108,9 +108,19 @@ public class ProjectDataService {
         int creationTimestampIndex = rs.findColumn("CreationTimestamp");
         int closedDateIndex = rs.findColumn("ClosedDate");
         int interestedIndex = rs.findColumn("IsInterested");
+        int memberIndex = rs.findColumn("IsMember");
+        int ownerIndex = rs.findColumn("IsOwner");
         while (rs.next()) {
-            results.add(new ProjectDTO(rs.getInt(idIndex), rs.getString(nameIndex), rs.getString(descriptionIndex),
-                    rs.getTimestamp(creationTimestampIndex), rs.getTimestamp(closedDateIndex), rs.getBoolean(interestedIndex)));
+            results.add(new ProjectDTO(
+                    rs.getInt(idIndex),
+                    rs.getString(nameIndex),
+                    rs.getString(descriptionIndex),
+                    rs.getTimestamp(creationTimestampIndex),
+                    rs.getTimestamp(closedDateIndex),
+                    rs.getBoolean(interestedIndex),
+                    rs.getBoolean(memberIndex),
+                    rs.getBoolean(ownerIndex)
+            ));
         }
         return results;
     }
@@ -121,15 +131,19 @@ public class ProjectDataService {
         private final String description;
         private final Timestamp creationTimestamp;
         private final Timestamp closedDate;
-        private final boolean interested;
+        private final boolean isInterested;
+        private final boolean isMember;
+        private final boolean isOwner;
 
-        public ProjectDTO(int id, String name, String description, Timestamp creationTimestamp, Timestamp closedDate, boolean interested) {
+        public ProjectDTO(int id, String name, String description, Timestamp creationTimestamp, Timestamp closedDate, boolean isInterested, boolean isMember, boolean isOwner) {
             this.id = id;
             this.name = name;
             this.description = description;
             this.creationTimestamp = creationTimestamp;
             this.closedDate = closedDate;
-            this.interested = interested;
+            this.isInterested = isInterested;
+            this.isMember = isMember;
+            this.isOwner = isOwner;
         }
 
         public int getId() {
@@ -152,8 +166,16 @@ public class ProjectDataService {
             return closedDate;
         }
 
-        public boolean getInterested() {
-            return interested;
+        public boolean isInterested() {
+            return isInterested;
+        }
+
+        public boolean isMember() {
+            return isMember;
+        }
+
+        public boolean isOwner() {
+            return isOwner;
         }
     }
 }

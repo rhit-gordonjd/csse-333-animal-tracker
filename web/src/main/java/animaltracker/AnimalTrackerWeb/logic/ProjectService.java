@@ -65,7 +65,9 @@ public class ProjectService {
         private final String description;
         private final Instant creationTimestamp;
         private final Instant closedDate;
-        private final boolean interested;
+        private final boolean isInterested;
+        private final boolean isMember;
+        private final boolean isOwner;
 
         public Project(ProjectDataService.ProjectDTO projectDTO) {
             this.id = projectDTO.getId();
@@ -73,7 +75,9 @@ public class ProjectService {
             this.description = projectDTO.getDescription();
             this.creationTimestamp = projectDTO.getCreationTimestamp().toInstant();
             this.closedDate = (projectDTO.getClosedDate() == null ? null : projectDTO.getClosedDate().toInstant());
-            this.interested = projectDTO.getInterested();
+            this.isInterested = projectDTO.isInterested();
+            this.isMember = projectDTO.isMember();
+            this.isOwner = projectDTO.isOwner();
         }
 
         public int getId() {
@@ -100,8 +104,16 @@ public class ProjectService {
             return closedDate != null && closedDate.isBefore(Instant.now());
         }
 
-        public boolean getInterested() {
-            return interested;
+        public boolean isInterested() {
+            return isInterested;
+        }
+
+        public boolean isMember() {
+            return isMember;
+        }
+
+        public boolean isOwner() {
+            return isOwner;
         }
     }
 }
