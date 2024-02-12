@@ -59,6 +59,10 @@ public class ProjectService {
         projectDataService.setInterested(user.getId(), projectId, interested);
     }
 
+    public void closeProject(Project project) throws SQLException {
+        projectDataService.closeProject(project.id);
+    }
+
     public static class Project {
         private final int id;
         private final String name;
@@ -101,7 +105,7 @@ public class ProjectService {
         }
 
         public boolean isCurrentlyClosed() {
-            return closedDate != null && closedDate.isBefore(Instant.now());
+            return closedDate != null;
         }
 
         public boolean isInterested() {

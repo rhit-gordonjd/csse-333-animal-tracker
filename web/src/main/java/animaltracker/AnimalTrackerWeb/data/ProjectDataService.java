@@ -125,6 +125,22 @@ public class ProjectDataService {
         return results;
     }
 
+    public void closeProject(int projectId) throws SQLException {
+        try (Connection connection = dataSource.getConnection();
+             CallableStatement stmt = connection.prepareCall(
+                     "{? = call CloseProject(@ProjectID = ?)}")) {
+            stmt.registerOutParameter(1, Types.INTEGER);
+            stmt.setInt(2, projectId);
+
+            stmt.executeUpdate();
+
+            int status = stmt.getInt(1);
+            if (status != 0) {
+                throw new SQLException("Stored Procedure CloseProject returned " + status);
+            }
+        }
+    }
+
     public static class ProjectDTO {
         private final int id;
         private final String name;

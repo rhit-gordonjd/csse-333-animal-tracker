@@ -7,6 +7,13 @@
 <body>
     <div th:replace="~{template :: header}"></div>
     <div class="container">
+        <div class="d-flex justify-content-end">
+            <button th:if="${project.isOwner && !project.isCurrentlyClosed}" type="button" class="btn btn-danger"
+                    data-bs-toggle="modal" data-bs-target="#closeProjectModal">
+                Close Project
+            </button>
+        </div>
+
         <div class="p-5 text-center bg-body-tertiary">
             <h1 th:text="${project.name}" class="mb-3">Heading</h1>
             <h4 th:text="${project.description}" class="mb-3">Subheading</h4>
@@ -34,6 +41,26 @@
         </table>
     </div>
 
+    <div th:if="${project.isOwner && !project.isCurrentlyClosed}" class="modal fade" id="closeProjectModal"
+         tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to close the project "[[${project.name}]]"?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <form method="post" th:action="@{/projects/{projectId}/close(projectId=${project.id})}">
+                        <input type="submit" class="btn btn-danger" value="Close Project">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 
 </html>
