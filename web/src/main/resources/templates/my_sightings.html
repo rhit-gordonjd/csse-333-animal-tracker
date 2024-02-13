@@ -10,6 +10,19 @@
     <div class="container">
         <div class="body">
             <h1 class="mb-3">My Sightings</h1>
+            <div id="row">
+                <label for="sort">Sort:</label>
+                <select name="sort" id="sort" th:field="*{sortType}">
+                    <option value="Date">Date</option>
+                    <option value="Organism">Organism</option>
+                    <option value="Project">Project</option>
+                </select>
+                <select name="sortOrder" id="sort" th:field="*{sortOrder}">
+                    <option value="Ascending">Ascending</option>
+                    <option value="Descending">Descending</option>
+                </select>
+
+            </div>
 
             <table class="table">
                 <thead>

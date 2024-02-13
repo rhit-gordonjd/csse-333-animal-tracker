@@ -1,6 +1,7 @@
 package animaltracker.AnimalTrackerWeb.presentation;
 
 import animaltracker.AnimalTrackerWeb.logic.*;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -130,10 +131,21 @@ public class SightingsController {
     }
 
     @GetMapping("/my_sightings")
-    public String getMySightings(Model model) throws SQLException {
-        User currentUser = userService.getCurrentUser();
+    public String getOrder(Model model) throws SQLException {
+//        User currentUser = userService.getCurrentUser();
+        model.addAttribute("sightingsForm", new MySightingsForm());
+//        model.addAttribute("sightings", sightingService.getUserSightings(currentUser));
 
-        model.addAttribute("sightings", sightingService.getUserSightings(currentUser));
+        return "my_sightings";
+    }
+
+    @PostMapping("/my_sightings")
+    public String getMySightings(@Valid @ModelAttribute("sightingsForm") MySightingsForm sightingsForm, BindingResult bindingResult, Model model) throws SQLException {
+        User currentUser = userService.getCurrentUser();
+        model.addAttribute("sightingsForm", sightingsForm);
+        String sortType = sightingsForm.getSortType();
+        String sortOrder = sightingsForm.getSortOrder();
+        model.addAttribute("sightings", sightingService.getUserSightings(currentUser, sortType, sortOrder));
 
         return "my_sightings";
     }
@@ -217,4 +229,29 @@ public class SightingsController {
             this.timestamp = timestamp;
         }
     }
+
+    public static class MySightingsForm {
+        @NotNull
+        private String sortType;
+
+        @NotNull
+        private String sortOrder;
+
+        public String getSortType() {
+            return sortType;
+        }
+
+        public String getSortOrder() {
+            return sortOrder;
+        }
+
+        public void setSortType(String sortType) {
+            this.sortType = sortType;
+        }
+
+        public void setSortOrder(String sortOrder) {
+            this.sortOrder = sortOrder;
+        }
+    }
+
 }

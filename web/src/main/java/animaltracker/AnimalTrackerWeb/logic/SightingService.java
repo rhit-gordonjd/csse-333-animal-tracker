@@ -26,8 +26,36 @@ public class SightingService {
                 .collect(Collectors.toList());
     }
 
-    public List<ProjectSightingWithProject> getUserSightings(User user) throws SQLException {
-        return sightingDataService.getUserSightings(user.getId())
+    public List<ProjectSightingWithProject> getUserSightings(User user, String sortType, String sortOrder) throws SQLException {
+//        return sightingDataService.getUserSightings(user.getId(), )
+//                .stream()
+//                .map(ProjectSightingWithProject::new)
+//                .collect(Collectors.toList());
+        if (sortType.equals("Date")) {
+            return getUserSightingsByTimestamp(user, sortOrder);
+        } else if (sortType.equals("Organism")) {
+            return getUserSightingsByOrganism(user, sortOrder);
+        } else {
+            return getUserSightingsByProject(user, sortOrder);
+        }
+    }
+
+    private List<ProjectSightingWithProject> getUserSightingsByTimestamp(User user, String sortOrder) throws SQLException {
+        return sightingDataService.getUserSightingsByTime(user.getId(), sortOrder)
+                .stream()
+                .map(ProjectSightingWithProject::new)
+                .collect(Collectors.toList());
+    }
+
+    private List<ProjectSightingWithProject> getUserSightingsByOrganism(User user, String sortOrder) throws SQLException {
+        return sightingDataService.getUserSightingsByOrganism(user.getId(), sortOrder)
+                .stream()
+                .map(ProjectSightingWithProject::new)
+                .collect(Collectors.toList());
+    }
+
+    private List<ProjectSightingWithProject> getUserSightingsByProject(User user, String sortOrder) throws SQLException {
+        return sightingDataService.getUserSightingsByProject(user.getId(), sortOrder)
                 .stream()
                 .map(ProjectSightingWithProject::new)
                 .collect(Collectors.toList());

@@ -1,5 +1,6 @@
 package animaltracker.AnimalTrackerWeb.data;
 
+import animaltracker.AnimalTrackerWeb.logic.SightingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -132,6 +133,84 @@ public class SightingDataService {
             ));
         }
         return results;
+    }
+
+    public List<SightingDataService.ProjectSightingWithProjectDTO> getUserSightingsByTime(Integer userID, String sortOrder) throws SQLException {
+        try (Connection connection = dataSource.getConnection()) {
+            try (CallableStatement stmt = connection.prepareCall(
+                    "{? = call GetUserSightings(@UserID = ?, @SortOrder = sortOrder)}")) {
+                stmt.registerOutParameter(1, Types.INTEGER);
+                stmt.setInt(2, userID);
+                stmt.setString(3, sortOrder);
+
+                ResultSet resultSet = stmt.executeQuery();
+
+                List<SightingDataService.ProjectSightingWithProjectDTO> out = parseProjectSightingsWithProject(resultSet);
+
+                int status = stmt.getInt(1);
+                if (status != 0) {
+                    throw new SQLException("Stored Procedure GetProject returned " + status);
+                }
+
+                if (out.isEmpty()) {
+                    return null;
+                } else {
+                    return out;
+                }
+            }
+        }
+    }
+
+    public List<SightingDataService.ProjectSightingWithProjectDTO> getUserSightingsByOrganism(Integer userID, String sortOrder) throws SQLException {
+        try (Connection connection = dataSource.getConnection()) {
+            try (CallableStatement stmt = connection.prepareCall(
+                    "{? = call GetUserSightingsByOrganism(@UserID = ?, @SortOrder = sortOrder)}")) {
+                stmt.registerOutParameter(1, Types.INTEGER);
+                stmt.setInt(2, userID);
+                stmt.setString(3, sortOrder);
+
+                ResultSet resultSet = stmt.executeQuery();
+
+                List<SightingDataService.ProjectSightingWithProjectDTO> out = parseProjectSightingsWithProject(resultSet);
+
+                int status = stmt.getInt(1);
+                if (status != 0) {
+                    throw new SQLException("Stored Procedure GetProject returned " + status);
+                }
+
+                if (out.isEmpty()) {
+                    return null;
+                } else {
+                    return out;
+                }
+            }
+        }
+    }
+
+    public List<SightingDataService.ProjectSightingWithProjectDTO> getUserSightingsByProject(Integer userID, String sortOrder) throws SQLException {
+        try (Connection connection = dataSource.getConnection()) {
+            try (CallableStatement stmt = connection.prepareCall(
+                    "{? = call GetUserSightingsByProject(@UserID = ?, @SortOrder = sortOrder)}")) {
+                stmt.registerOutParameter(1, Types.INTEGER);
+                stmt.setInt(2, userID);
+                stmt.setString(3, sortOrder);
+
+                ResultSet resultSet = stmt.executeQuery();
+
+                List<SightingDataService.ProjectSightingWithProjectDTO> out = parseProjectSightingsWithProject(resultSet);
+
+                int status = stmt.getInt(1);
+                if (status != 0) {
+                    throw new SQLException("Stored Procedure GetProject returned " + status);
+                }
+
+                if (out.isEmpty()) {
+                    return null;
+                } else {
+                    return out;
+                }
+            }
+        }
     }
 
     public static class ProjectSightingDTO {
