@@ -7,8 +7,10 @@
 <body>
     <div th:replace="~{template :: header}"></div>
     <div class="container">
-        <div class="d-flex justify-content-end">
-            <a class="btn btn-secondary" th:href="@{/projects/{projectId}/sightings/new(projectId=${project.id})}">Submit a sighting</a>
+        <div class="d-flex justify-content-end gap-3 mb-3">
+            <a class="btn btn-secondary" th:href="@{/projects/{projectId}/sightings/new(projectId=${project.id})}">
+                Submit a sighting
+            </a>
             <button th:if="${project.isOwner && !project.isCurrentlyClosed}" type="button" class="btn btn-danger"
                     data-bs-toggle="modal" data-bs-target="#closeProjectModal">
                 Close Project
