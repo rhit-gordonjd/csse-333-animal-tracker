@@ -7,60 +7,62 @@
 <body>
     <div th:replace="~{template :: header}"></div>
 
-    <h1>Submit Sighting for <span th:remove="tag" th:text="${project.name}">Project Name</span></h1>
+    <div class="container">
+        <h1>Submit Sighting for <span th:remove="tag" th:text="${project.name}">Project Name</span></h1>
 
-    <p th:if="${project.isCurrentlyClosed}">This project is closed. You cannot submit sightings to it.</p>
-    <form th:unless="${project.isCurrentlyClosed}"
-          th:action="@{/projects/{projectId}/sightings/new(projectId=${project.id})}"
-          th:object="${values}"
-          method="post" enctype="multipart/form-data"
-    >
-        <input type="hidden" name="imageStage" th:field="*{imageStage}">
-        <div>
-            <label for="select-organism">
-                Organism:
-            </label>
-            <select name="organism" id="select-organism" th:field="*{organism}">
-                <option value="">&mdash; Please select an organism &mdash;</option>
-                <option th:each="organism: ${organismOptions}"
-                        th:text="${{organism}}"
-                        th:value="${organism.id}">
-                    Common Name (Scientific Name)
-                </option>
-            </select>
-            <p th:if="${#fields.hasErrors('organism')}" th:errors="*{organism}">Organism Error</p>
-        </div>
-        <div th:if="*{imageStage == 1}">
-            <label for="image">
-                Image:
-            </label>
-            <input type="file" name="image" id="image" accept="image/png,image/jpeg">
-            <p>PNG and JPEG images under 25MB are supported</p>
-            <!--/* We show errors for imageUrl since that is the field that is ultimately validated */-->
-            <p th:if="${#fields.hasErrors('imageUrl')}" th:errors="*{imageUrl}">Image Error</p>
-        </div>
-        <div th:if="*{imageStage == 2}" th:remove="tag">
-            <img th:src="*{imageUrl}" alt="Uploaded Image" width="500">
-            <!--/* Send back the URL of the uploaded image */-->
-            <input type="hidden" name="imageUrl" th:field="*{imageUrl}">
+        <p th:if="${project.isCurrentlyClosed}">This project is closed. You cannot submit sightings to it.</p>
+        <form th:unless="${project.isCurrentlyClosed}"
+              th:action="@{/projects/{projectId}/sightings/new(projectId=${project.id})}"
+              th:object="${values}"
+              method="post" enctype="multipart/form-data"
+        >
+            <input type="hidden" name="imageStage" th:field="*{imageStage}">
+            <div>
+                <label class="form-label" for="select-organism">
+                    Organism:
+                </label>
+                <select class="form-select" name="organism" id="select-organism" th:field="*{organism}">
+                    <option value="">&mdash; Please select an organism &mdash;</option>
+                    <option th:each="organism: ${organismOptions}"
+                            th:text="${{organism}}"
+                            th:value="${organism.id}">
+                        Common Name (Scientific Name)
+                    </option>
+                </select>
+                <p th:if="${#fields.hasErrors('organism')}" th:errors="*{organism}">Organism Error</p>
+            </div>
+            <div th:if="*{imageStage == 1}">
+                <label class="form-label" for="image">
+                    Image:
+                </label>
+                <input class="form-control" type="file" name="image" id="image" accept="image/png,image/jpeg">
+                <p>PNG and JPEG images under 25MB are supported</p>
+                <!--/* We show errors for imageUrl since that is the field that is ultimately validated */-->
+                <p th:if="${#fields.hasErrors('imageUrl')}" th:errors="*{imageUrl}">Image Error</p>
+            </div>
+            <div th:if="*{imageStage == 2}" th:remove="tag">
+                <img th:src="*{imageUrl}" alt="Uploaded Image" width="500">
+                <!--/* Send back the URL of the uploaded image */-->
+                <input type="hidden" name="imageUrl" th:field="*{imageUrl}">
 
-            <div>
-                <label for="latitude">Latitude:</label>
-                <input type="text" name="latitude" id="latitude" th:field="*{latitude}">
-                <p th:if="${#fields.hasErrors('latitude')}" th:errors="*{latitude}">Latitude Error</p>
+                <div>
+                    <label class="form-label" for="latitude">Latitude:</label>
+                    <input class="form-control" type="text" name="latitude" id="latitude" th:field="*{latitude}">
+                    <p th:if="${#fields.hasErrors('latitude')}" th:errors="*{latitude}">Latitude Error</p>
+                </div>
+                <div>
+                    <label class="form-label" for="longitude">Longitude:</label>
+                    <input class="form-control" type="text" name="latitude" id="longitude" th:field="*{longitude}">
+                    <p th:if="${#fields.hasErrors('longitude')}" th:errors="*{longitude}">Longitude Error</p>
+                </div>
+                <div>
+                    <label class="form-label" for="timestamp">Timestamp (UTC):</label>
+                    <input class="form-control" type="text" name="timestamp" id="timestamp" th:field="*{timestamp}">
+                    <p th:if="${#fields.hasErrors('timestamp')}" th:errors="*{timestamp}">Timestamp Error</p>
+                </div>
             </div>
-            <div>
-                <label for="longitude">Longitude:</label>
-                <input type="text" name="latitude" id="longitude" th:field="*{longitude}">
-                <p th:if="${#fields.hasErrors('longitude')}" th:errors="*{longitude}">Longitude Error</p>
-            </div>
-            <div>
-                <label for="timestamp">Timestamp (UTC):</label>
-                <input type="text" name="timestamp" id="timestamp" th:field="*{timestamp}">
-                <p th:if="${#fields.hasErrors('timestamp')}" th:errors="*{timestamp}">Timestamp Error</p>
-            </div>
-        </div>
-        <div><input type="submit" value="Submit"/></div>
-    </form>
+            <div><input type="submit" value="Submit"/></div>
+        </form>
+    </div>
 </body>
 </html>
