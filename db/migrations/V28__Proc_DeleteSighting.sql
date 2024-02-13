@@ -4,9 +4,9 @@ CREATE PROCEDURE DeleteSighting
 )
 AS
 BEGIN
-	IF (NOT EXISTS (SELECT * FROM SightingID WHERE ID = @SightingID))
+	IF (NOT EXISTS (SELECT * FROM Sighting WHERE ID = @SightingID))
 	BEGIN
-		RAISERROR('This sighting id does not exsist', 14, 2);
+		RAISERROR('This sighting id does not exists', 14, 2);
 		RETURN 1;
 	END
 	ELSE
@@ -17,7 +17,7 @@ BEGIN
 		DELETE FROM SightingVerification
 		WHERE SightingID = @SightingID
 
-		DELETE FROM SightingID
+		DELETE FROM Sighting
 		WHERE ID = @SightingID
 	END
 END
