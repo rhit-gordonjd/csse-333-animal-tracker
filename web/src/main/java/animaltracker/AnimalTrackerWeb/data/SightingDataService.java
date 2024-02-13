@@ -56,11 +56,7 @@ public class SightingDataService {
                     throw new SQLException("Stored Procedure GetProject returned " + status);
                 }
 
-                if (out.isEmpty()) {
-                    return null;
-                } else {
-                    return out;
-                }
+                return out;
             }
         }
     }
@@ -81,11 +77,7 @@ public class SightingDataService {
                     throw new SQLException("Stored Procedure GetProject returned " + status);
                 }
 
-                if (out.isEmpty()) {
-                    return null;
-                } else {
-                    return out;
-                }
+                return out;
             }
         }
     }
@@ -133,6 +125,25 @@ public class SightingDataService {
         }
         return results;
     }
+
+    public void deleteSighting(int sightingId) throws SQLException
+    {
+        try (Connection connection = dataSource.getConnection()) {
+            try (CallableStatement stmt = connection.prepareCall(
+                    "{? = call DeleteSighting(@SightingID = ?)}")) {
+                stmt.registerOutParameter(1, Types.INTEGER);
+                stmt.setInt(2, sightingId);
+
+                stmt.executeUpdate();
+
+                int status = stmt.getInt(1);
+                if (status != 0) {
+                    throw new SQLException("Stored Procedure DeleteSighting returned " + status);
+                }
+            }
+        }
+    }
+
 
     public static class ProjectSightingDTO {
         private final int id;
