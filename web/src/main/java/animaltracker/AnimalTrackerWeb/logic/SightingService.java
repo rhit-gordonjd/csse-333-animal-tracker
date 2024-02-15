@@ -7,7 +7,6 @@ import org.springframework.stereotype.Component;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -42,21 +41,10 @@ public class SightingService {
     }
 
     private List<ProjectSightingWithProject> getUserSightingsByTimestamp(User user, String sortOrder) throws SQLException {
-        List<SightingDataService.ProjectSightingWithProjectDTO> userSightings = sightingDataService.getUserSightingsByTime(user.getId(), sortOrder);
-        if (userSightings != null) {
-            return userSightings
-                    .stream()
-                    .map(ProjectSightingWithProject::new)
-                    .collect(Collectors.toList());
-        } else {
-            return new ArrayList<ProjectSightingWithProject>();
-        }
-
-
-//        return sightingDataService.getUserSightingsByTime(user.getId(), sortOrder)
-//                .stream()
-//                .map(ProjectSightingWithProject::new)
-//                .collect(Collectors.toList());
+        return sightingDataService.getUserSightingsByTime(user.getId(), sortOrder)
+                .stream()
+                .map(ProjectSightingWithProject::new)
+                .collect(Collectors.toList());
     }
 
     private List<ProjectSightingWithProject> getUserSightingsByOrganism(User user, String sortOrder) throws SQLException {
