@@ -42,7 +42,8 @@
                     <td th:text="${sighting.commonName}"></td>
                     <td th:text="${sighting.scientificName}"></td>
                     <td th:text="${sighting.displayName}"></td>
-                    <td th:text="${sighting.timestamp}"></td>
+                    <td><a th:text="${sighting.timestamp}"
+                           th:href="@{/sightings/{sightingId}(sightingId=${sighting.id})}"></a></td>
                     <td th:text="|${sighting.latitude}, ${sighting.longitude}|"></td>
                 </tr>
             </tbody>

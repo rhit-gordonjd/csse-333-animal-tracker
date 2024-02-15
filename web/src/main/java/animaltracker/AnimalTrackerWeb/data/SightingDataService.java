@@ -82,6 +82,46 @@ public class SightingDataService {
         }
     }
 
+    public ProjectSightingAndImagesDTO getSighting(int sightingId) throws SQLException {
+        try (Connection connection = dataSource.getConnection()) {
+            try (CallableStatement stmt = connection.prepareCall(
+                    "{? = call GetSightingDetails(@SightingID = ?)}")) {
+                stmt.registerOutParameter(1, Types.INTEGER);
+                stmt.setInt(2, sightingId);
+
+                if (!stmt.execute()) {
+                    throw new RuntimeException("Expected Result Set 1");
+                }
+                List<SightingDataService.ProjectSightingWithProjectDTO> sightingDetailsList = parseProjectSightingsWithProject(stmt.getResultSet());
+
+                if (!stmt.getMoreResults()) {
+                    throw new RuntimeException("Expected Result Set 2");
+                }
+                List<String> images = parseImages(stmt.getResultSet());
+
+                int status = stmt.getInt(1);
+                if (status != 0) {
+                    throw new SQLException("Stored Procedure GetProject returned " + status);
+                }
+
+                if (sightingDetailsList.isEmpty()) {
+                    return null;
+                }
+
+                return new ProjectSightingAndImagesDTO(sightingDetailsList.get(0), images);
+            }
+        }
+    }
+
+    private static List<String> parseImages(ResultSet resultSetImages) throws SQLException {
+        List<String> images = new ArrayList<>();
+        int imageUrlIndex = resultSetImages.findColumn("ImageURL");
+        while (resultSetImages.next()) {
+            images.add(resultSetImages.getString(imageUrlIndex));
+        }
+        return images;
+    }
+
     private List<SightingDataService.ProjectSightingDTO> parseProjectSightings(ResultSet rs) throws SQLException {
         List<SightingDataService.ProjectSightingDTO> results = new ArrayList<>();
         int idIndex = rs.findColumn("ID");
@@ -126,8 +166,7 @@ public class SightingDataService {
         return results;
     }
 
-    public void deleteSighting(int sightingId) throws SQLException
-    {
+    public void deleteSighting(int sightingId) throws SQLException {
         try (Connection connection = dataSource.getConnection()) {
             try (CallableStatement stmt = connection.prepareCall(
                     "{? = call DeleteSighting(@SightingID = ?)}")) {
@@ -210,6 +249,24 @@ public class SightingDataService {
 
         public String getProjectName() {
             return projectName;
+        }
+    }
+
+    public static class ProjectSightingAndImagesDTO {
+        private final ProjectSightingWithProjectDTO details;
+        private final List<String> images;
+
+        public ProjectSightingAndImagesDTO(ProjectSightingWithProjectDTO details, List<String> images) {
+            this.details = details;
+            this.images = images;
+        }
+
+        public ProjectSightingWithProjectDTO getDetails() {
+            return details;
+        }
+
+        public List<String> getImages() {
+            return images;
         }
     }
 }

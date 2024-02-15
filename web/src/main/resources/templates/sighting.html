@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <div th:replace="~{template :: head}"></div>
+    <title th:text="|Sighting for ${sighting.projectName}|"></title>
+</head>
+<body>
+<div th:replace="~{template :: header}"></div>
+
+<div class="container">
+    <h1>
+        Sighting for
+        <a th:href="@{/projects/{projectId}(projectId=${sighting.projectId})}">
+            <em th:text="${sighting.projectName}">Project Name</em>
+        </a>
+    </h1>
+    <h2>
+        by
+        <em th:text="${sighting.displayName}">User</em>
+    </h2>
+    <h2 class="mb-3">
+        of
+        <em>
+            <span th:remove="tag" th:if="${sighting.commonName}" th:text="${sighting.commonName}">Common Name</span>
+            <span th:remove="tag" th:if="${sighting.scientificName}" th:text="|(${sighting.scientificName})|">(Scientific Name)</span>
+        </em>
+    </h2>
+
+    <img class="my-4" width="800" th:each="image : ${images}" th:src="${image}">
+    <p th:if="${images.empty}">This sighting has no images</p>
+
+    <p>Timestamp: [[${sighting.timestamp}]]</p>
+    <p>Location: [[${sighting.latitude}]], [[${sighting.longitude}]]</p>
+</div>
+</body>
+
+</html>
