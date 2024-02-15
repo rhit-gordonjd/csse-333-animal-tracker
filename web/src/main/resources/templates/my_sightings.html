@@ -10,18 +10,20 @@
     <div class="container">
         <div class="body">
             <h1 class="mb-3">My Sightings</h1>
-            <div id="row">
-                <label for="sort">Sort:</label>
-                <select name="sort" id="sort" th:field="*{sortType}">
-                    <option value="Date">Date</option>
-                    <option value="Organism">Organism</option>
-                    <option value="Project">Project</option>
-                </select>
-                <select name="sortOrder" id="sort" th:field="*{sortOrder}">
-                    <option value="Ascending">Ascending</option>
-                    <option value="Descending">Descending</option>
-                </select>
-
+            <div>
+                <form th:object="${MySightingsForm}" th:action="@{/my_sightings}" method="post" modelAttribute="form">
+                    <label for="sort">Sort:</label>
+                    <select name="sortType" id="sortType">
+                        <option th:value="Date" th:text="Date"></option>
+                        <option th:value="Organism" th:text="Organism"></option>
+                        <option th:value="Project" th:text="Project"></option>
+                    </select>
+                    <select name="sortOrder" id="sortOrder">
+                        <option th:value="Ascending" >Ascending</option>
+                        <option th:value="Descending">Descending</option>
+                    </select>
+                    <input type="submit" value="Submit"/>
+                </form>
             </div>
 
             <table class="table">

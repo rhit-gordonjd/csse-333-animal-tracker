@@ -138,7 +138,7 @@ public class SightingDataService {
     public List<SightingDataService.ProjectSightingWithProjectDTO> getUserSightingsByTime(Integer userID, String sortOrder) throws SQLException {
         try (Connection connection = dataSource.getConnection()) {
             try (CallableStatement stmt = connection.prepareCall(
-                    "{? = call GetUserSightings(@UserID = ?, @SortOrder = sortOrder)}")) {
+                    "{? = call GetUserSightings(@UserID = ?, @SortOrder = ?)}")) {
                 stmt.registerOutParameter(1, Types.INTEGER);
                 stmt.setInt(2, userID);
                 stmt.setString(3, sortOrder);
@@ -164,7 +164,7 @@ public class SightingDataService {
     public List<SightingDataService.ProjectSightingWithProjectDTO> getUserSightingsByOrganism(Integer userID, String sortOrder) throws SQLException {
         try (Connection connection = dataSource.getConnection()) {
             try (CallableStatement stmt = connection.prepareCall(
-                    "{? = call GetUserSightingsByOrganism(@UserID = ?, @SortOrder = sortOrder)}")) {
+                    "{? = call GetUserSightingsByOrganism(@UserID = ?, @SortOrder = ?)}")) {
                 stmt.registerOutParameter(1, Types.INTEGER);
                 stmt.setInt(2, userID);
                 stmt.setString(3, sortOrder);
@@ -190,7 +190,7 @@ public class SightingDataService {
     public List<SightingDataService.ProjectSightingWithProjectDTO> getUserSightingsByProject(Integer userID, String sortOrder) throws SQLException {
         try (Connection connection = dataSource.getConnection()) {
             try (CallableStatement stmt = connection.prepareCall(
-                    "{? = call GetUserSightingsByProject(@UserID = ?, @SortOrder = sortOrder)}")) {
+                    "{? = call GetUserSightingsByProject(@UserID = ?, @SortOrder = ?)}")) {
                 stmt.registerOutParameter(1, Types.INTEGER);
                 stmt.setInt(2, userID);
                 stmt.setString(3, sortOrder);

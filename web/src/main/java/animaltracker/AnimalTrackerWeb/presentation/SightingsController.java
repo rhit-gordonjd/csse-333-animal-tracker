@@ -132,10 +132,10 @@ public class SightingsController {
 
     @GetMapping("/my_sightings")
     public String getOrder(Model model) throws SQLException {
-//        User currentUser = userService.getCurrentUser();
+        User currentUser = userService.getCurrentUser();
         model.addAttribute("sightingsForm", new MySightingsForm());
-//        model.addAttribute("sightings", sightingService.getUserSightings(currentUser));
-
+        model.addAttribute("sightings", sightingService.getUserSightings(currentUser, "Date", "A"));
+        System.out.println("getmapping");
         return "my_sightings";
     }
 
@@ -147,6 +147,7 @@ public class SightingsController {
         String sortOrder = sightingsForm.getSortOrder();
         model.addAttribute("sightings", sightingService.getUserSightings(currentUser, sortType, sortOrder));
 
+        System.out.println("postMapping");
         return "my_sightings";
     }
 
