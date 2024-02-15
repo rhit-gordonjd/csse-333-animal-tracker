@@ -1,0 +1,9 @@
+/.vscode/flyway-10.6.0/
+/.vscode/flyway-10.6.0/flyway
+importer/src/main/java/org/example/data/config.properties
+importer/target/classes/org/example/data/Config.class
+importer/target/classes/org/example/data/config.properties
+importer/target/classes/org/example/data/Database.class
+importer/target/classes/org/example/logic/Importer.class
+importer/target/classes/org/example/presentation/ImportMain.class
+

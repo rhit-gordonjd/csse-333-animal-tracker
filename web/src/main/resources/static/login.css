@@ -1,0 +1,53 @@
+
+:root {
+    
+}
+
+.container {
+    display: grid;
+    grid-template-columns:  repeat(3, 1fr);
+    justify-content: center;
+}
+
+.welcome-center {
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    grid-column: 1 / 4;
+    font-size: 24px;
+    color: black;
+    grid-row: 1;
+    text-align: center;
+}
+
+.login-center {
+    background-color: rgb(28, 43, 215);
+    grid-column: 2 / 3;
+    box-shadow: #000000 1px 1px;
+    grid-row: 2;
+    display: flex;
+    margin: auto 0;
+    justify-content: center;
+    padding-top: 30px;
+    padding-bottom: 30px;
+    border-radius: 10px;
+}
+
+.login-piece {
+    margin: 8px 0;
+    border: 1px solid #000000;
+    border-radius: 4px;
+}
+
+.login-input {
+
+}
+
+.error-center {
+    color: white;
+    grid-column: 2 / 3;
+    grid-row: 3;
+    background-color: black;
+    border-radius: 10px;
+    margin: 10px;
+    text-align: center;
+
+}

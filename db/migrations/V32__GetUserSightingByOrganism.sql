@@ -27,7 +27,7 @@ BEGIN
 		JOIN Sighting as S on O.ID = S.OrganismID
 		JOIN [User] as U on U.ID = S.UserID
 		WHERE U.ID = @UserID
-		ORDER BY S.OrganismID
+		ORDER BY O.CommonName
 	END
 
 	-- descending
@@ -39,7 +39,7 @@ BEGIN
 		JOIN Sighting as S on O.ID = S.OrganismID
 		JOIN [User] as U on U.ID = S.UserID
 		WHERE U.ID = @UserID
-		ORDER BY S.OrganismID DESC
+		ORDER BY O.CommonName DESC
 	END
 
 END
