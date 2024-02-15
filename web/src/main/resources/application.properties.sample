@@ -1,3 +1,0 @@
-spring.datasource.url=jdbc:sqlserver://golem.csse.rose-hulman.edu;databaseName=AnimalTracker-<name>;encrypt=false
-spring.datasource.username=AnimalTrackerApp
-spring.datasource.password=<password>
