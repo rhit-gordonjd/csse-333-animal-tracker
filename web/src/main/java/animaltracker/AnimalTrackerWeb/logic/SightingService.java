@@ -28,10 +28,6 @@ public class SightingService {
     }
 
     public List<ProjectSightingWithProject> getUserSightings(User user, String sortType, String sortOrder) throws SQLException {
-//        return sightingDataService.getUserSightings(user.getId(), )
-//                .stream()
-//                .map(ProjectSightingWithProject::new)
-//                .collect(Collectors.toList());
         if (sortType.equals("Date")) {
             return getUserSightingsByTimestamp(user, sortOrder);
         } else if (sortType.equals("Organism")) {
