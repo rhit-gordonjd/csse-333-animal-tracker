@@ -43,5 +43,6 @@ BEGIN
 	END
 
 END
+GO
 
 GRANT EXECUTE ON GetUserSightingsByOrganism TO AnimalTrackerApp
