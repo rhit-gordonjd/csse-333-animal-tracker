@@ -151,6 +151,22 @@ public class SightingsController {
         return "my_sightings";
     }
 
+    @GetMapping("/sightings/{sightingId}")
+    public String getSighting(@PathVariable int sightingId, Model model) throws SQLException {
+        User currentUser = userService.getCurrentUser();
+
+        SightingService.ProjectSightingAndImages sighting = sightingService.getSighting(sightingId);
+
+        if (sighting == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+
+        model.addAttribute("sighting", sighting.getDetails());
+        model.addAttribute("images", sighting.getImages());
+
+        return "sighting";
+    }
+
     private String saveImage(MultipartFile image, String extension) throws UnsupportedImageTypeException, IOException, SQLException {
         return imageUploadService.save(
                 image.getInputStream(),

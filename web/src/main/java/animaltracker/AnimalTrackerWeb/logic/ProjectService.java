@@ -13,10 +13,25 @@ import java.util.stream.Collectors;
 public class ProjectService {
     @Autowired
     private ProjectDataService projectDataService;
+    @Autowired
+    private UserService userService;
 
-    public List<Project> getUserInterestedProjects(User details) throws SQLException {
-        int userId = details.getId();
-        List<ProjectDataService.ProjectDTO> interestedProjects = projectDataService.getInterestedProjects(userId);
+    private Integer getCurrentUserIdOrNull() {
+        User user = userService.getCurrentUser();
+        if (user != null) {
+            return user.getId();
+        } else {
+            return null;
+        }
+    }
+
+    public List<Project> getUserInterestedProjects() throws SQLException {
+        User currentUser = userService.getCurrentUser();
+        if (currentUser == null) {
+            return List.of();
+        }
+
+        List<ProjectDataService.ProjectDTO> interestedProjects = projectDataService.getInterestedProjects(currentUser.getId());
         return interestedProjects
                 .stream()
                 .map(Project::new)
@@ -24,7 +39,7 @@ public class ProjectService {
     }
 
     public Project getProjectById(int id) throws SQLException {
-        ProjectDataService.ProjectDTO projectDTO = projectDataService.getProjectById(id);
+        ProjectDataService.ProjectDTO projectDTO = projectDataService.getProjectById(getCurrentUserIdOrNull(), id);
         if (projectDTO == null) {
             return null;
         } else {
@@ -33,11 +48,19 @@ public class ProjectService {
     }
 
     public List<Project> getAllProjects() throws SQLException {
-        List<ProjectDataService.ProjectDTO> interestedProjects = projectDataService.getAllProjects();
+        List<ProjectDataService.ProjectDTO> interestedProjects = projectDataService.getAllProjects(getCurrentUserIdOrNull());
         return interestedProjects
                 .stream()
                 .map(Project::new)
                 .collect(Collectors.toList());
+    }
+
+    public void setInterested(User user, int projectId, boolean interested) throws SQLException {
+        projectDataService.setInterested(user.getId(), projectId, interested);
+    }
+
+    public void closeProject(Project project) throws SQLException {
+        projectDataService.closeProject(project.id);
     }
 
     public static class Project {
@@ -46,6 +69,9 @@ public class ProjectService {
         private final String description;
         private final Instant creationTimestamp;
         private final Instant closedDate;
+        private final boolean isInterested;
+        private final boolean isMember;
+        private final boolean isOwner;
 
         public Project(ProjectDataService.ProjectDTO projectDTO) {
             this.id = projectDTO.getId();
@@ -53,6 +79,9 @@ public class ProjectService {
             this.description = projectDTO.getDescription();
             this.creationTimestamp = projectDTO.getCreationTimestamp().toInstant();
             this.closedDate = (projectDTO.getClosedDate() == null ? null : projectDTO.getClosedDate().toInstant());
+            this.isInterested = projectDTO.isInterested();
+            this.isMember = projectDTO.isMember();
+            this.isOwner = projectDTO.isOwner();
         }
 
         public int getId() {
@@ -76,7 +105,19 @@ public class ProjectService {
         }
 
         public boolean isCurrentlyClosed() {
-            return closedDate != null && closedDate.isBefore(Instant.now());
+            return closedDate != null;
+        }
+
+        public boolean isInterested() {
+            return isInterested;
+        }
+
+        public boolean isMember() {
+            return isMember;
+        }
+
+        public boolean isOwner() {
+            return isOwner;
         }
     }
 }

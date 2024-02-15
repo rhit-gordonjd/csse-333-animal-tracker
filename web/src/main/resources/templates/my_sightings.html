@@ -43,12 +43,46 @@
                     <td th:text="${sighting.commonName}"></td>
                     <td th:text="${sighting.scientificName}"></td>
                     <td th:text="${sighting.displayName}"></td>
-                    <td th:text="${sighting.timestamp}"></td>
+                    <td><a th:text="${sighting.timestamp}"
+                           th:href="@{/sightings/{sightingId}(sightingId=${sighting.id})}"></a></td>
                     <td th:text="|${sighting.latitude}, ${sighting.longitude}|"></td>
+                    <td>
+                        <button type="button" id="removeSightingButton" class="btn" data-bs-toggle="modal" data-bs-target="#deletionModel" onclick="handleUpdateSightingID(event);">
+                            <img src="/images/remove.svg" alt="Remove Sighting" th:data-id="${sighting.id}" width="28" height="28">
+                        </button>
+                    </td>
                 </tr>
                 </tbody>
             </table>
         </div>
+
+        <div class="modal fade" id="deletionModel" tabindex="-1" aria-labelledby="deletionModel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5">Delete Conformation</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Are you sure you would like to delete this Sighting?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Go Back</button>
+                        <form method="post" th:action="@{/sightings/delete}">
+                            <input type="hidden" id="sightingId" name="sightingId">
+                            <button type="submit" class="btn btn-primary">Delete</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </body>
+<script>
+    function handleUpdateSightingID(evt)
+    {
+      sightingID = evt.target.getAttribute("data-id");
+      document.getElementById("sightingId").value = sightingID;
+    }
+</script>
 </html>

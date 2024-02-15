@@ -5,6 +5,16 @@
 
     <div class="card my-3" th:each="project : ${projects}">
         <div class="card-body">
+            <form method="post" th:action="@{/projects/{projectId}/interested(projectId=${project.id})}">
+                <input type="hidden" name="returnTo" th:value="${currentUri}">
+                <input type="hidden" name="interested" th:value="!${project.isInterested}">
+                <button type="submit" href="#" class="btn float-end">
+                    <img th:unless="${project.isInterested}" src="/images/heart-outline.svg" alt="Follow Project"
+                         width="28" height="28">
+                    <img th:if="${project.isInterested}" src="/images/heart.svg" alt="Unfollow Project" width="28"
+                         height="28">
+                </button>
+            </form>
             <h4 class="card-title">
                 <a th:href="@{/projects/{projectId}(projectId=${project.id})}" th:text="${project.name}">
                     Project Name

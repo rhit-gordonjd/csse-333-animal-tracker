@@ -21,6 +21,7 @@ public class WebSecurityConfig {
                                 //   so that /login?registered is permitted
                                 .requestMatchers("/projects").permitAll()
                                 .requestMatchers("/projects/*").permitAll()
+                                .requestMatchers("/sightings/*").permitAll()
                                 .requestMatchers("/register", "/login").permitAll()
                                 .anyRequest().authenticated()
                 )

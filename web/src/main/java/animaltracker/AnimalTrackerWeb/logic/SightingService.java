@@ -61,6 +61,18 @@ public class SightingService {
                 .collect(Collectors.toList());
     }
 
+    public ProjectSightingAndImages getSighting(int id) throws SQLException {
+        SightingDataService.ProjectSightingAndImagesDTO dto = sightingDataService.getSighting(id);
+        if (dto == null) {
+            return null;
+        }
+
+        return new ProjectSightingAndImages(
+                new ProjectSightingWithProject(dto.getDetails()),
+                dto.getImages()
+        );
+    }
+
 
     public static class ProjectSighting {
         private final int id;
@@ -110,7 +122,7 @@ public class SightingService {
         }
     }
 
-    public static class ProjectSightingWithProject extends ProjectSighting  {
+    public static class ProjectSightingWithProject extends ProjectSighting {
         private final int projectId;
         private final String projectName;
 
@@ -126,6 +138,24 @@ public class SightingService {
 
         public String getProjectName() {
             return projectName;
+        }
+    }
+
+    public static class ProjectSightingAndImages {
+        private final ProjectSightingWithProject details;
+        private final List<String> images;
+
+        public ProjectSightingAndImages(ProjectSightingWithProject details, List<String> images) {
+            this.details = details;
+            this.images = images;
+        }
+
+        public ProjectSightingWithProject getDetails() {
+            return details;
+        }
+
+        public List<String> getImages() {
+            return images;
         }
     }
 }
