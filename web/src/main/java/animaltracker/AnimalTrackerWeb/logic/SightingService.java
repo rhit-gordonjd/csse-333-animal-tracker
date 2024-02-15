@@ -51,30 +51,26 @@ public class SightingService {
         } else {
             return new ArrayList<ProjectSightingWithProject>();
         }
+
+
+//        return sightingDataService.getUserSightingsByTime(user.getId(), sortOrder)
+//                .stream()
+//                .map(ProjectSightingWithProject::new)
+//                .collect(Collectors.toList());
     }
 
     private List<ProjectSightingWithProject> getUserSightingsByOrganism(User user, String sortOrder) throws SQLException {
-        List<SightingDataService.ProjectSightingWithProjectDTO> userSightings = sightingDataService.getUserSightingsByOrganism(user.getId(), sortOrder);
-        if (userSightings != null) {
-            return userSightings
-                    .stream()
-                    .map(ProjectSightingWithProject::new)
-                    .collect(Collectors.toList());
-        } else {
-            return new ArrayList<ProjectSightingWithProject>();
-        }
+        return sightingDataService.getUserSightingsByOrganism(user.getId(), sortOrder)
+                .stream()
+                .map(ProjectSightingWithProject::new)
+                .collect(Collectors.toList());
     }
 
     private List<ProjectSightingWithProject> getUserSightingsByProject(User user, String sortOrder) throws SQLException {
-        List<SightingDataService.ProjectSightingWithProjectDTO> userSightings = sightingDataService.getUserSightingsByProject(user.getId(), sortOrder);
-        if (userSightings != null) {
-            return userSightings
-                    .stream()
-                    .map(ProjectSightingWithProject::new)
-                    .collect(Collectors.toList());
-        } else {
-            return new ArrayList<ProjectSightingWithProject>();
-        }
+        return sightingDataService.getUserSightingsByProject(user.getId(), sortOrder)
+                .stream()
+                .map(ProjectSightingWithProject::new)
+                .collect(Collectors.toList());
     }
 
     public ProjectSightingAndImages getSighting(int id) throws SQLException {
