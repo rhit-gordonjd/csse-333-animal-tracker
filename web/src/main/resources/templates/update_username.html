@@ -12,7 +12,10 @@
     <form th:object="${usernameForm}" th:action="@{/settings/updateusername}" method="post" modelAttribute="usernameForm">
         <div><label> Username <input class="form-control" type="text" name="newusername" field="*{newusername}"/> </label></div>
         <div><input type="submit" value="Save Change"/></div>
-        <p th:if="${#fields.hasErrors('newusername')}" th:errors="*{newusername}">Username Error</p>
+<!--        <p th:if="${#fields.hasErrors('newusername')}" th:errors="*{newusername}">Username Error</p>-->
+        <p th:if="${#fields.hasAnyErrors()}">
+            <p th:each="err : ${#fields.allErrors()}" th:text="${err}" />
+        </p>
     </form>
 </div>
 </body>

@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -40,9 +41,16 @@ public class UpdateUsernameController {
         int userID = user.getId();
 
         try{
-            settings.updateUsername(userID, usernameForm.getnewusername());
+            if (!settings.updateUsername(userID, usernameForm.getnewusername())) {
+                ObjectError updateError = new ObjectError("globalError", "something went wrong, please try again");
+                bindingResult.addError(updateError);
+                return "update_username";
+            }
         }catch(Exception e){
             System.out.println("Something went wrong");
+            ObjectError updateError = new ObjectError("globalError", "something went wrong, please try again");
+            bindingResult.addError(updateError);
+            return "update_username";
         }
         return "redirect:/settings";
     }
