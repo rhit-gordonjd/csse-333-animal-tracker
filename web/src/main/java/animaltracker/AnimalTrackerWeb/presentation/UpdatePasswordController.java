@@ -31,6 +31,9 @@ public class UpdatePasswordController {
 
     @PostMapping("/settings/updatepassword")
     public String updateDisplayName(@Valid @ModelAttribute("passwordForm") UpdatePasswordForm passwordForm, BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            return "update_password";
+        }
         model.addAttribute("passwordForm",passwordForm);
         User user = userService.getCurrentUser();
         int userID = user.getId();
@@ -47,13 +50,13 @@ public class UpdatePasswordController {
 
 
     public static class UpdatePasswordForm {
-        @NotEmpty
+        @NotEmpty(message="please enter your old password")
         private String oldpassword;
 
-        @NotEmpty
+        @NotEmpty(message = "new password cannot be empty")
         private String newpassword;
 
-        @NotEmpty
+        @NotEmpty(message = "please confirm your new password")
         private String confnewpassword;
 
         public String getoldpassword() {

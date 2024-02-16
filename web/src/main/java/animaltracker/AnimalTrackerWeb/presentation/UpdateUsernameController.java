@@ -5,6 +5,7 @@ import animaltracker.AnimalTrackerWeb.logic.User;
 import animaltracker.AnimalTrackerWeb.logic.UserService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Pattern;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -31,6 +32,9 @@ public class UpdateUsernameController {
 
     @PostMapping("/settings/updateusername")
     public String updateUsername(@Valid @ModelAttribute("usernameForm") UpdateUsernameForm usernameForm, BindingResult bindingResult, Model model) {
+        if(bindingResult.hasErrors()) {
+            return "update_username";
+        }
         model.addAttribute("usernameForm", usernameForm);
         User user = userService.getCurrentUser();
         int userID = user.getId();
@@ -45,8 +49,9 @@ public class UpdateUsernameController {
 
 
     public static class UpdateUsernameForm {
-        @NotEmpty
-        @Length(max = 50)
+        @NotEmpty(message="username cannot be empty")
+        @Length(min = 3, max = 20, message = "Username must be 3-50 characters long")
+        @Pattern(regexp = "[a-zA-Z0-9-_.]*", message = "username can only consist of numbers, letters, '_', '-', and '.'")
         private String newusername;
 
         public String getnewusername() {

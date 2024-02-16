@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <div th:replace="~{template :: head}"></div>
     <title>Change Username</title>
@@ -9,9 +9,10 @@
     <div th:replace="~{template :: header}"></div>
     <h1>Update Username</h1>
     <div>Input your new username</div>
-    <form th:object="${UpdateUsernameForm}" th:action="@{/settings/updateusername}" method="post" modelAttribute="usernameForm">
-        <div><label> Username <input type="text" name="newusername"/> </label></div>
+    <form th:object="${usernameForm}" th:action="@{/settings/updateusername}" method="post" modelAttribute="usernameForm">
+        <div><label> Username <input class="form-control" type="text" name="newusername" field="*{newusername}"/> </label></div>
         <div><input type="submit" value="Save Change"/></div>
+        <p th:if="${#fields.hasErrors('newusername')}" th:errors="*{newusername}">Username Error</p>
     </form>
 </div>
 </body>
