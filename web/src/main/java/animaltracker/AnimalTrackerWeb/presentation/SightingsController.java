@@ -135,7 +135,6 @@ public class SightingsController {
         User currentUser = userService.getCurrentUser();
         model.addAttribute("sightingsForm", new MySightingsForm());
         model.addAttribute("sightings", sightingService.getUserSightings(currentUser, "Date", "A"));
-        System.out.println("getmapping");
         return "my_sightings";
     }
 
@@ -146,8 +145,6 @@ public class SightingsController {
         String sortType = sightingsForm.getSortType();
         String sortOrder = sightingsForm.getSortOrder();
         model.addAttribute("sightings", sightingService.getUserSightings(currentUser, sortType, sortOrder));
-
-        System.out.println("postMapping");
         return "my_sightings";
     }
 
