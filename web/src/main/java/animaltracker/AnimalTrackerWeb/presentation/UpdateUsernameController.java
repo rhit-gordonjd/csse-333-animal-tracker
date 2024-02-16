@@ -58,7 +58,7 @@ public class UpdateUsernameController {
 
     public static class UpdateUsernameForm {
         @NotEmpty(message="username cannot be empty")
-        @Length(min = 3, max = 20, message = "Username must be 3-50 characters long")
+        @Length(min = 3, max = 20, message = "username must be 3-50 characters long")
         @Pattern(regexp = "[a-zA-Z0-9-_.]*", message = "username can only consist of numbers, letters, '_', '-', and '.'")
         private String newusername;
 

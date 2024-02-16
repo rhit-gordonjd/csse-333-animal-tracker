@@ -51,7 +51,10 @@ public class UpdatePasswordController {
             settings.updatePassword(userID, passwordForm.getoldpassword(), passwordForm.getnewpassword(), passwordForm.getconfnewpassword());
         }catch(Exception e){
             e.printStackTrace();
+            ObjectError exceptError = new ObjectError("globalError", "something went wrong, please try again");
+            bindingResult.addError(exceptError);
             System.out.println("Something went wrong");
+            return "update_password";
         }
         return "redirect:/settings";
     }

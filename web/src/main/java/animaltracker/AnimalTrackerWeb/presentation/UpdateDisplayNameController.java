@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,12 +32,19 @@ public class UpdateDisplayNameController {
 
     @PostMapping("/settings/updatedisplayname")
     public String updateDisplayName(@Valid @ModelAttribute("form") UpdateDisplayNameController.UpdateDisplayNameForm form, BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            return "update_display_name";
+        }
         model.addAttribute("form",form);
         User user = userService.getCurrentUser();
         int userID = user.getId();
 
         try{
-            settings.updateDisplayName(userID, form.getnewdisplayname());
+            if (!settings.updateDisplayName(userID, form.getnewdisplayname())) {
+                ObjectError dNameError = new ObjectError("globalError", "Something went wrong, please try again");
+                bindingResult.addError(dNameError);
+                return "update_display_name";
+            }
         }catch(Exception e){
             System.out.println("Something went wrong");
         }
@@ -45,8 +53,8 @@ public class UpdateDisplayNameController {
 
 
     public static class UpdateDisplayNameForm {
-        @NotEmpty
-        @Length(max = 50)
+        @NotEmpty(message="please enter new display name")
+        @Length(max = 50, message = "display name cannot be longer than 50 characters")
         private String newdisplayname;
 
         public String getnewdisplayname() {
