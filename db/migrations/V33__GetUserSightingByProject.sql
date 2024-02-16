@@ -1,4 +1,4 @@
-CREATE PROCEDURE [dbo].[GetUserSightingsByOrganism]
+CREATE PROCEDURE [dbo].[GetUserSightingsByProject]
 (
 	@UserID int,
 	@SortOrder char(1) --sort order will either be A for ascending or D for descending
@@ -27,7 +27,7 @@ BEGIN
 		JOIN Sighting as S on O.ID = S.OrganismID
 		JOIN [User] as U on U.ID = S.UserID
 		WHERE U.ID = @UserID
-		ORDER BY S.OrganismID
+		ORDER BY P.Name
 	END
 
 	-- descending
@@ -39,9 +39,10 @@ BEGIN
 		JOIN Sighting as S on O.ID = S.OrganismID
 		JOIN [User] as U on U.ID = S.UserID
 		WHERE U.ID = @UserID
-		ORDER BY S.OrganismID DESC
+		ORDER BY P.Name DESC
 	END
 
 END
+GO
 
-GRANT EXECUTE ON GetUserSightingsByOrganism TO AnimalTrackerApp
+GRANT EXECUTE ON GetUserSightingsByProject TO AnimalTrackerApp
