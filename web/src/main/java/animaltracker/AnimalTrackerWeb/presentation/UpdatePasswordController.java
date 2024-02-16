@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,13 +32,20 @@ public class UpdatePasswordController {
 
     @PostMapping("/settings/updatepassword")
     public String updateDisplayName(@Valid @ModelAttribute("passwordForm") UpdatePasswordForm passwordForm, BindingResult bindingResult, Model model) {
-        if (bindingResult.hasErrors()) {
-            return "update_password";
-        }
         model.addAttribute("passwordForm",passwordForm);
         User user = userService.getCurrentUser();
         int userID = user.getId();
-        System.out.println(userID);
+        if (!settings.verifyOldPassword(userID, passwordForm.getoldpassword())) {
+            ObjectError oldPassError = new ObjectError("globalError", "old password is not correct, please try again");
+            bindingResult.addError(oldPassError);
+        }
+        if (!settings.verifyNewPassword(userID, passwordForm.getnewpassword(), passwordForm.getconfnewpassword())) {
+            ObjectError newPassError = new ObjectError("globalError", "new passwords do not match");
+            bindingResult.addError(newPassError);
+        }
+        if (bindingResult.hasErrors()) {
+            return "update_password";
+        }
 
         try{
             settings.updatePassword(userID, passwordForm.getoldpassword(), passwordForm.getnewpassword(), passwordForm.getconfnewpassword());

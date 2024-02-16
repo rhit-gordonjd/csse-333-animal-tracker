@@ -47,4 +47,12 @@ public class SettingsService {
         }
         return false;
     }
+
+    public boolean verifyOldPassword(int UserID, String oldpassword) {
+        return checkPassword(UserID, oldpassword);
+    }
+
+    public boolean verifyNewPassword(int UserID, String newpassword, String confnewpassword) {
+        return newpassword.equals(confnewpassword);
+    }
 }
